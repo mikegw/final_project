@@ -1,5 +1,10 @@
 class User < ActiveRecord::Base
 
+  has_many :lists,
+  inverse_of: :owner,
+  foreign_key: :owner_id
+
+
   validates :username, :password_digest, presence: true
   validates :password, length: { minimum: 6, allow_nil: true }
 
