@@ -1,4 +1,6 @@
-<h1><%= @user.username %> is awesome</h1>
+<a href="<%= user_url(current_user) %>">Home</a>
+
+<h1><%= h @user.username %> is awesome</h1>
 <ul>
   <% @user.lists.each do |list| %>
     <% if list.access == "PUBLIC" || list.owner == current_user %>
@@ -7,61 +9,119 @@
   <% end %>
 </ul>
 
-<h2><%= @user.username %> has so many friends</h2>
+<h2><%= h @user.username %> has so many friends</h2>
 
 <ul>
   <% @user.friends.each do |friend| %>
     <li class="friend">
-      <a href="<%= users_url(friend) %>"><%= friend.username %></a>
+      <a href="<%= user_url(friend) %>"><%= h friend.username %></a>
     </li>
   <% end %>
 </ul>
 
-<h2>Add a friend</h2>
-<form action="<%=  %>" method="get" accept-charset="utf-8">
-  <input
-    type="hidden"
-    name="authenticity_token"
-    value="<%= form_authenticity_token %>"
-  >
+<% if @user == current_user %>
+  <h2>So many people want to be <%= h @user.username %>'s friend</h2>
+  <ul>
+    <% @received_request_users.each do |user| %>
+      <li class="friend">
+        <a href="<%= user_friendships_url(user) %>" ><%= h user.username %></a>
+        <%= button_to "Accept",
+          user_friendships_url(user),
+          method: :post %>
+        <%= button_to "Reject",
+          delete_user_friend_request_url(user),
+          method: :delete %>
+      </li>
+    <% end %>
+  </ul>
 
-  <input type="text" name="searchstring">
+  <h2>Add a friend</h2>
+  <form action="<%= search_user_url(@user) %>" method="get" accept-charset="utf-8">
+    <input
+      type="hidden"
+      name="authenticity_token"
+      value="<%= form_authenticity_token %>"
+    >
 
-  <p><input type="submit" value="Search for your friend"></p>
-</form>
+    <input type="text" name="searchstring">
 
-
-
-<h2>Create a new List</h2>
-<form action="<%= lists_url %>" method="POST">
-  <input
-    type="hidden"
-    name="authenticity_token"
-    value="<%= form_authenticity_token %>">
-
-  <label for="list-title">List Name</label>
-  <input type="text" name="list[title]" id="list-title">
-
-  <br>
-
-  <input type="radio" name="list[access]" id="list-access0" value="PUBLIC">
-  <label for="list-access0">Public</label>
-
-  <br>
-
-  <input type="radio" name="list[access]" id="list-access1" value="FRIENDS">
-  <label for="list-access1">Friends Only</label>
+    <p><input type="submit" value="Search for your friend"></p>
+  </form>
 
   <br>
 
-  <input type="radio" name="list[access]" id="list-access2" value="PRIVATE">
-  <label for="list-access2">Private</label>
+  <ul>
+    <% @search.each do |user| %>
+      <% next if user == current_user %>
+      <li class="searched">
+        <a href="<%= user_url(user) %>"><%= h user.username %></a>
 
-  <br>
+        <% if @friends.include?(user) %>
+          <%= button_to "Unfriend",
+            user_friend_requests_url(user),
+            method: :delete %>
+        <% elsif @sent_request_users.include?(user) %>
+          <p>Request Sent</p>
+        <% else %>
+          <%= button_to "Befriend",
+            user_friend_requests_url(user),
+            method: :post %>
+        <% end %>
+
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <% if @friends.include?(@user) %>
+    <%= button_to "Unfriend",
+      user_friend_requests_url(@user),
+      method: :delete %>
+  <% elsif @sent_request_users.include?(@user) %>
+    <p>Request Sent</p>
+  <% else %>
+    <%= button_to "Befriend",
+      user_friend_requests_url(@user),
+      method: :post %>
+  <% end %>
+<% end %>
 
 
-  <p><input type="submit" value="Save"></p>
-</form>
+
+
+
+
+<% if @user == current_user %>
+  <h2>Create a new List</h2>
+  <form action="<%= lists_url %>" method="POST">
+    <input
+      type="hidden"
+      name="authenticity_token"
+      value="<%= form_authenticity_token %>">
+
+    <label for="list-title">List Name</label>
+    <input type="text" name="list[title]" id="list-title">
+
+    <br>
+
+    <input type="radio" name="list[access]" id="list-access0" value="PUBLIC">
+    <label for="list-access0">Public</label>
+
+    <br>
+
+    <input type="radio" name="list[access]" id="list-access1" value="FRIENDS">
+    <label for="list-access1">Friends Only</label>
+
+    <br>
+
+    <input type="radio" name="list[access]" id="list-access2" value="PRIVATE">
+    <label for="list-access2">Private</label>
+
+    <br>
+
+
+    <p><input type="submit" value="Save"></p>
+  </form>
+<% end %>
 
 <% flash[:errors] && flash[:errors].each do |error| %>
   <%= error %><br>

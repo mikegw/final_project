@@ -5,15 +5,17 @@ class UsersController < ApplicationController
   def index
 
   end
-  
-  def search
-    @user = User.find(params[:id])
-    @search = 
-  end
 
   def show
     @user = User.find(params[:id])
-    @search =  if params[:searchstring]
+    @search = []
+    @friends = current_user.friends
+    @sent_request_users = current_user.users_with_friend_requests.where(
+      "friend_requests.status = 'PENDING'"
+    )
+    @received_request_users = current_user.friend_requests_from_users.where(
+      "friend_requests.status = 'PENDING'"
+    )
   end
 
   def new
@@ -23,12 +25,12 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save!
+    if @user.save
       sign_in(@user)
-      redirect_to root_url
+      redirect_to user_url(@user)
     else
       flash.now[:errors] = @user.errors.full_messages
-      render new
+      render :new
     end
   end
 
@@ -37,6 +39,25 @@ class UsersController < ApplicationController
 
   def update
   end
+
+  def search
+    @user = User.find(params[:id])
+    if /^[[:alpha:]\s@\.]+$/.match(params[:searchstring])
+      @search = User.where("username LIKE '#{params[:searchstring]}%'")
+    else
+      @search = []
+    end
+    @friends = current_user.friends
+    @sent_request_users = current_user.users_with_friend_requests.where(
+      "friend_requests.status = 'PENDING'"
+    )
+    @received_request_users = current_user.friend_requests_from_users.where(
+      "friend_requests.status = 'PENDING'"
+    )
+    render :show
+  end
+
+
 
   private
 

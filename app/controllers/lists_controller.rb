@@ -5,7 +5,7 @@ class ListsController < ApplicationController
     unless @list.save
       flash[:errors] = @list.errors.full_messages
     end
-    redirect_to root_url
+    redirect_to user_url(current_user)
   end
 
   def edit
@@ -17,7 +17,7 @@ class ListsController < ApplicationController
     unless @list.save
       flash[:errors] = @list.errors.full_messages
     end
-    redirect_to root_url
+    redirect_to user_url(current_user)
   end
 
   def destroy
