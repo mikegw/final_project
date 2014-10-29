@@ -9,27 +9,36 @@ class User < ActiveRecord::Base
 
 
   has_many :received_friend_requests,
-  inverse_of: :receiver,
-  class_name: "FriendRequest",
-  foreign_key: :receiver_user_id,
-  dependent: :destroy
+    inverse_of: :receiver,
+    class_name: "FriendRequest",
+    foreign_key: :receiver_user_id,
+    dependent: :destroy
 
   has_many :sent_friend_requests,
-  inverse_of: :sender,
-  class_name: "FriendRequest",
-  foreign_key: :sender_user_id,
-  dependent: :destroy
+    inverse_of: :sender,
+    class_name: "FriendRequest",
+    foreign_key: :sender_user_id,
+    dependent: :destroy
 
 
   has_many :users_with_friend_requests,
-  inverse_of: :friend_requests_from_users,
-  through: :sent_friend_requests,
-  source: :receiver
+    inverse_of: :friend_requests_from_users,
+    through: :sent_friend_requests,
+    source: :receiver
 
   has_many :friend_requests_from_users,
-  inverse_of: :users_with_friend_requests,
-  through: :received_friend_requests,
-  source: :sender
+    inverse_of: :users_with_friend_requests,
+    through: :received_friend_requests,
+    source: :sender
+
+  has_many :collaborations,
+    class_name: "Share",
+    inverse_of: :collaborator,
+    dependent: :destroy
+
+  has_many :shared_lists,
+    through: :collaborations,
+    source: :list
 
 
 

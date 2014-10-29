@@ -11,7 +11,10 @@ Rails.application.routes.draw do
 
   end
 
-  resources :lists, only: [:create, :update, :destroy]
+  resources :lists, only: [:create, :update, :destroy] do
+    resources :list_items, as: :items, only: [:create, :update, :destroy]
+  end
+
   resource :session, only: [:new, :create, :destroy]
 
   delete "/users/:user_id/friend_requests/delete", as: "delete_user_friend_request", to: "friend_requests#destroy"

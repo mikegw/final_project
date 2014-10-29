@@ -1,23 +1,6 @@
 <a href="<%= user_url(current_user) %>">Home</a>
 
 <h1><%= h @user.username %> is awesome</h1>
-<ul>
-  <% @user.lists.each do |list| %>
-    <% if list.access == "PUBLIC" || list.owner == current_user %>
-      <li class="<%= list.access.downcase %>"><%= list.title %></li>
-    <% end %>
-  <% end %>
-</ul>
-
-<h2><%= h @user.username %> has so many friends</h2>
-
-<ul>
-  <% @user.friends.each do |friend| %>
-    <li class="friend">
-      <a href="<%= user_url(friend) %>"><%= h friend.username %></a>
-    </li>
-  <% end %>
-</ul>
 
 <% if @user == current_user %>
   <h2>So many people want to be <%= h @user.username %>'s friend</h2>
@@ -45,7 +28,7 @@
 
     <input type="text" name="searchstring">
 
-    <p><input type="submit" value="Search for your friend"></p>
+    <input type="submit" value="Search for your friend">
   </form>
 
   <br>
@@ -85,8 +68,14 @@
   <% end %>
 <% end %>
 
-
-
+<h2><%= h @user.username %> has so many friends</h2>
+<ul>
+  <% @user.friends.each do |friend| %>
+    <li class="friend">
+      <a href="<%= user_url(friend) %>"><%= h friend.username %></a>
+    </li>
+  <% end %>
+</ul>
 
 
 
@@ -126,3 +115,42 @@
 <% flash[:errors] && flash[:errors].each do |error| %>
   <%= error %><br>
 <% end %>
+
+<h2> <%= h @user.username %> has all these amazing lists</h2>
+
+<ul>
+  <% @user.lists.each do |list| %>
+    <% if list.access == "PUBLIC" || list.owner == current_user %>
+      <li class="<%= list.access.downcase %>"><%= h list.title %></li>
+    <% end %>
+  <% end %>
+</ul>
+
+<h2> Check out those list items!</h2>
+
+<ul>
+  <% @user.lists.each do |list| %>
+    <% if list.access == "PUBLIC" || list.owner == current_user %>
+      <li class="<%= list.access.downcase %>"><%= h list.title %>
+        <form action="<%= list_items_url(list) %>" method="post">
+
+          <%= form_auth %>
+          <label for="list_item_content">
+          <input type="text" name="list_item[content]" id="list_item_content">
+
+          <p><input type="submit" value="Continue &rarr;"></p>
+        </form>
+
+        <ul>
+          <% list.list_items.each do |item| %>
+            <li>
+              <h4><%= h item.content %></h4>
+              <p><%= h item.details %></p>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+
+    <% end %>
+  <% end %>
+</ul>

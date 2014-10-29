@@ -7,6 +7,10 @@ class List < ActiveRecord::Base
   inverse_of: :lists,
   class_name: "User"
 
+  has_many :list_items, inverse_of: :list, dependent: :destroy
 
+  has_many :shares, inverse_of: :list, dependent: :destroy
+
+  has_many :collaborators, through: :shares, source: :collaborator
 
 end

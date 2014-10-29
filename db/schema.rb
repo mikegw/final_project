@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141029142521) do
+ActiveRecord::Schema.define(version: 20141029211733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,14 +33,30 @@ ActiveRecord::Schema.define(version: 20141029142521) do
     t.datetime "updated_at"
   end
 
+  create_table "list_items", force: true do |t|
+    t.integer "list_id",                   null: false
+    t.string  "content",                   null: false
+    t.text    "details"
+    t.boolean "completed", default: false
+    t.boolean "starred",   default: false
+  end
+
+  add_index "list_items", ["list_id"], name: "index_list_items_on_list_id", using: :btree
+
   create_table "lists", force: true do |t|
-    t.integer "owner_id",  null: false
-    t.string  "title",     null: false
+    t.integer "owner_id", null: false
+    t.string  "title",    null: false
     t.string  "access"
-    t.boolean "completed"
   end
 
   add_index "lists", ["owner_id"], name: "index_lists_on_owner_id", using: :btree
+
+  create_table "shares", force: true do |t|
+    t.integer "user_id", null: false
+    t.integer "list_id", null: false
+  end
+
+  add_index "shares", ["user_id", "list_id"], name: "index_shares_on_user_id_and_list_id", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "username"
