@@ -9,7 +9,9 @@
 <body>
 
   <% if signed_in? %>
-    <%= button_to "Sign out", session_url, method: 'DELETE' %>
+    <%= button_to "Sign out", session_url, method: :delete %>
+  <% else %>
+    <a href="<%= new_user_url %>">Sign Up</a>
   <% end %>
 
 

@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
   inverse_of: :owner,
   foreign_key: :owner_id
 
+  has_many :friendships, foreign_key: :befriender
+  has_many :friends, through: :friendships, source: :befriendee
+
 
   validates :username, :password_digest, presence: true
   validates :password, length: { minimum: 6, allow_nil: true }

@@ -5,9 +5,15 @@ class UsersController < ApplicationController
   def index
 
   end
+  
+  def search
+    @user = User.find(params[:id])
+    @search = 
+  end
 
   def show
-    @user = current_user
+    @user = User.find(params[:id])
+    @search =  if params[:searchstring]
   end
 
   def new
