@@ -9,13 +9,24 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @search = []
-    @friends = current_user.friends
-    @sent_request_users = current_user.users_with_friend_requests.where(
-      "friend_requests.status = 'PENDING'"
+    @friends = current_user.friends.where(
+      "friendships.status = 'ACCEPTED'"
     )
-    @received_request_users = current_user.friend_requests_from_users.where(
-      "friend_requests.status = 'PENDING'"
+    # @sent_request_users = current_user.friends.where(
+#       "friendships.status = 'PENDING'"
+#     )
+#     @received_request_users = current_user.friends.where(
+#       "friendships.status = 'PENDING'"
+#     )
+
+    @sent_request_users = current_user.friendships.where(
+      "friendships.status = 'PENDING'"
     )
+
+    @received_request_users = current_user.potential_friends.where(
+      "friendships.status = 'PENDING'"
+    )
+
   end
 
   def new
@@ -43,16 +54,17 @@ class UsersController < ApplicationController
   def search
     @user = User.find(params[:id])
     if /^[[:alpha:]\s@\.]+$/.match(params[:searchstring])
-      @search = User.where("username LIKE '#{params[:searchstring]}%'")
+      @search = User.where("username LIKE '#{params[:searchstring]}%' OR email LIKE '#{params[:searchstring]}%'")
     else
       @search = []
     end
     @friends = current_user.friends
-    @sent_request_users = current_user.users_with_friend_requests.where(
-      "friend_requests.status = 'PENDING'"
+    @sent_request_users = current_user.friendships.where(
+      "friendships.status = 'PENDING'"
     )
-    @received_request_users = current_user.friend_requests_from_users.where(
-      "friend_requests.status = 'PENDING'"
+
+    @received_request_users = current_user.potential_friends.where(
+      "friendships.status = 'PENDING'"
     )
     render :show
   end

@@ -11,31 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141029211733) do
+ActiveRecord::Schema.define(version: 20141029223150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "friend_requests", force: true do |t|
-    t.integer  "sender_user_id"
-    t.integer  "receiver_user_id"
-    t.string   "status",           default: "PENDING"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "friend_requests", ["sender_user_id", "receiver_user_id"], name: "index_friend_requests_on_sender_user_id_and_receiver_user_id", using: :btree
 
   create_table "friendships", force: true do |t|
     t.integer  "befriender_id", null: false
     t.integer  "befriendee_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status", default: "PENDING"
   end
 
   create_table "list_items", force: true do |t|
-    t.integer "list_id",                   null: false
-    t.string  "content",                   null: false
+    t.integer "list_id", null: false
+    t.string  "content", null: false
     t.text    "details"
     t.boolean "completed", default: false
     t.boolean "starred",   default: false

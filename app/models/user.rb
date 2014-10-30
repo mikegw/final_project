@@ -7,29 +7,34 @@ class User < ActiveRecord::Base
   has_many :friendships, foreign_key: :befriender_id, dependent: :destroy
   has_many :friends, through: :friendships, source: :befriendee
 
-
-  has_many :received_friend_requests,
-    inverse_of: :receiver,
-    class_name: "FriendRequest",
-    foreign_key: :receiver_user_id,
+  has_many :friend_requests,
+    class_name: "Friendship",
+    foreign_key: :befriendee_id,
     dependent: :destroy
 
-  has_many :sent_friend_requests,
-    inverse_of: :sender,
-    class_name: "FriendRequest",
-    foreign_key: :sender_user_id,
-    dependent: :destroy
+  # def potential_friends
+#     User.joins("INNER JOIN friendships ON users.id = friendships.befriender_id")
+#       .where("friendships.befriendee_id = ? AND friendships.status = 'PENDING'", self.id)
+#   end
+#
+#   def friend_requests
+#     User.joins("INNER JOIN friendships ON users.id = friendships.befriendee_id")
+#       .where("friendships.befriender_id = ? AND friendships.status = 'PENDING'", self.id)
+#   end
 
+  # def pending_friendships
+#     self.friendships.where("friendship.status = 'PENDING")
+#   end
+#
+#   def pending_friend_requests
+#     self.friend_requests.
+#   end
 
-  has_many :users_with_friend_requests,
-    inverse_of: :friend_requests_from_users,
-    through: :sent_friend_requests,
-    source: :receiver
+  has_many :potential_friends,
+    through: :friend_requests,
+    -> { where(status: 'PENDING') },
+    source: :befriender
 
-  has_many :friend_requests_from_users,
-    inverse_of: :users_with_friend_requests,
-    through: :received_friend_requests,
-    source: :sender
 
   has_many :collaborations,
     class_name: "Share",
