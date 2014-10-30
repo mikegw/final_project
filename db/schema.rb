@@ -11,22 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141029223150) do
+ActiveRecord::Schema.define(version: 20141030150139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "comments", force: true do |t|
+    t.integer "user_id"
+    t.text    "body"
+    t.integer "commentable_id"
+    t.string  "commentable_type"
+  end
+
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
   create_table "friendships", force: true do |t|
-    t.integer  "befriender_id", null: false
-    t.integer  "befriendee_id", null: false
+    t.integer  "befriender_id",                     null: false
+    t.integer  "befriendee_id",                     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status", default: "PENDING"
+    t.string   "status",        default: "PENDING"
   end
 
   create_table "list_items", force: true do |t|
-    t.integer "list_id", null: false
-    t.string  "content", null: false
+    t.integer "list_id",                   null: false
+    t.string  "content",                   null: false
     t.text    "details"
     t.boolean "completed", default: false
     t.boolean "starred",   default: false

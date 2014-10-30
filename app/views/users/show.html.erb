@@ -121,10 +121,10 @@
 
 <ul>
   <% @user.lists.each do |list| %>
-    <% if list.access == "PUBLIC" || list.owner == current_user %>
+    <% if list.access == "PUBLIC" || list.owner == current_user || list.access == "FRIENDS" && @user.friends.include?(current_user) %>
       <li class="<%= list.access.downcase %>"><%= h list.title %></li>
 
-      form
+      <!-- form -->
 
 
     <% end %>

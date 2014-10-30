@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       collection do
         get "accept"
         get "reject"
+        delete "", to: "friendships#destroy"
       end
     end
     member do

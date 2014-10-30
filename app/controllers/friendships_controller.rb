@@ -3,42 +3,53 @@ class FriendshipsController < ApplicationController
   def create
     user = User.find(params[:user_id])
 
-    friendship = current_user.friendships.new(befriendee_id: user.id)
+    friendship = current_user.pending_friendships.new(befriendee_id: user.id)
 
     unless friendship.save
       flash[:errors] = friendship.errors.full_messages
     end
-
+    puts "redirecting to " + URI(request.referer).path
     redirect_to URI(request.referer).path
   end
 
-  def update(new_status)
+  def accept
     user = User.find(params[:user_id])
 
-    friendship1 = current_user.friendships.new(befriendee_id: user.id)
-    friendship2 = user.friendships.find_by_befriendee_id(current_user.id)
-    friendship1[:status] = new_status
-    friendship2[:status] = new_status
+    friendship1 = current_user.pending_friendships.new(befriendee_id: user.id)
+    friendship2 = user.pending_friendships.find_by_befriendee_id(current_user.id)
+
+    friendship1[:status] = "ACCEPTED"
+    friendship2[:status] = "ACCEPTED"
+
+    p friendship1
+    p friendship2
 
     ActiveRecord::Base.transaction do
       begin
         friendship1.save!
-        friendship2.update!
+        friendship2.save!
       rescue ActiveRecord::RecordInvalid
         flash[:errors] = friendship1.errors.full_messages
-        flash[:errors] = friendship2.errors.full_messages
+        flash[:errors] += friendship2.errors.full_messages
       end
     end
 
     redirect_to URI(request.referer).path
   end
 
-  def accept
-    update("ACCEPTED")
-  end
-
   def reject
-    update("REJECTED")
+    user = User.find(params[:user_id])
+
+    friendship = user.pending_friendships.find_by_befriendee_id(current_user.id)
+    friendship[:status] = "REJECTED"
+
+    p friendship
+
+    unless friendship.save!
+      flash[:errors] = friendship.errors.full_messages
+    end
+
+    redirect_to URI(request.referer).path
   end
 
   def destroy

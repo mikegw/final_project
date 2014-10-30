@@ -9,23 +9,9 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @search = []
-    @friends = current_user.friends.where(
-      "friendships.status = 'ACCEPTED'"
-    )
-    # @sent_request_users = current_user.friends.where(
-#       "friendships.status = 'PENDING'"
-#     )
-#     @received_request_users = current_user.friends.where(
-#       "friendships.status = 'PENDING'"
-#     )
-
-    @sent_request_users = current_user.friendships.where(
-      "friendships.status = 'PENDING'"
-    )
-
-    @received_request_users = current_user.potential_friends.where(
-      "friendships.status = 'PENDING'"
-    )
+    @friends = current_user.friends
+    @sent_request_users = current_user.pending_friends
+    @received_request_users = current_user.potential_friends
 
   end
 
@@ -59,13 +45,8 @@ class UsersController < ApplicationController
       @search = []
     end
     @friends = current_user.friends
-    @sent_request_users = current_user.friendships.where(
-      "friendships.status = 'PENDING'"
-    )
-
-    @received_request_users = current_user.potential_friends.where(
-      "friendships.status = 'PENDING'"
-    )
+    @sent_request_users = current_user.pending_friends
+    @received_request_users = current_user.potential_friends
     render :show
   end
 

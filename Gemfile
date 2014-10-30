@@ -39,6 +39,8 @@ gem 'rails_12factor'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'backbone-on-rails'
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'

@@ -4,13 +4,49 @@ class User < ActiveRecord::Base
   inverse_of: :owner,
   foreign_key: :owner_id
 
-  has_many :friendships, foreign_key: :befriender_id, dependent: :destroy
-  has_many :friends, through: :friendships, source: :befriendee
+  has_many :friendships,
+    foreign_key: :befriender_id,
+    dependent: :destroy
 
-  has_many :friend_requests,
+  has_many :accepted_friendships,
+    -> { where(status: 'ACCEPTED') },
+    class_name: "Friendship",
+    foreign_key: :befriender_id,
+    dependent: :destroy
+
+  has_many :pending_friendships,
+    -> { where(status: 'PENDING') },
+    class_name: "Friendship",
+    foreign_key: :befriender_id,
+    dependent: :destroy
+
+    has_many :rejected_friendships,
+      -> { where(status: 'REJECTED') },
+      class_name: "Friendship",
+      foreign_key: :befriender_id,
+      dependent: :destroy
+
+  has_many :pending_friend_requests,
+    -> { where(status: 'PENDING') },
     class_name: "Friendship",
     foreign_key: :befriendee_id,
     dependent: :destroy
+
+
+  has_many :rejected_friend_requests,
+    -> { where(status: 'REJECTED') },
+    class_name: "Friendship",
+    foreign_key: :befriendee_id,
+    dependent: :destroy
+
+  has_many :friends, through: :accepted_friendships, source: :befriendee
+
+  has_many :potential_friends, through: :pending_friend_requests, source: :befriender
+  has_many :pending_friends, through: :pending_friendships, source: :befriendee
+
+  has_many :rejected_friends, through: :rejected_friendships, source: :befriendee
+  has_many :stalkers, through: :rejected_friend_requests, source: :befriender
+
 
   # def potential_friends
 #     User.joins("INNER JOIN friendships ON users.id = friendships.befriender_id")
@@ -29,11 +65,6 @@ class User < ActiveRecord::Base
 #   def pending_friend_requests
 #     self.friend_requests.
 #   end
-
-  has_many :potential_friends,
-    through: :friend_requests,
-    -> { where(status: 'PENDING') },
-    source: :befriender
 
 
   has_many :collaborations,
