@@ -1,6 +1,6 @@
 class Share < ActiveRecord::Base
 
-  validates :list_id, scope: :user_id
+  validates :list_id, uniqueness: {scope: :user_id}
 
   belongs_to :collaborator,
     class_name: "User",
@@ -8,6 +8,6 @@ class Share < ActiveRecord::Base
     inverse_of: :collaborations
 
   belongs_to :list,
-    inverse_of: :list_share
+    inverse_of: :list_shares
 
 end
