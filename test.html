@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Triangle &amp; Hover Tooltip</title>
+  <style>
+
+  html, body, div, img, a, strong {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+  }
+
+  body {
+    padding: 100px;
+    font-family: sans-serif;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .thumb {
+    display: block;
+    position: relative;
+    margin: auto;
+    width: 60px;
+    background: red;
+    border: 5px solid blue;
+    cursor: pointer;
+  }
+
+  .thumb > strong {
+    display: none;
+    position: absolute;
+    top: -45px;
+    left: -30px;
+    padding: 5px 10px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    white-space: nowrap;
+    border-radius: 5px;
+    font-size: 12px;
+  }
+
+  .thumb:hover > strong {
+    display: block;
+  }
+
+  .thumb > strong:after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: -10px;
+
+    left: 50%;
+    margin-left: -10px;
+
+    width: 0;
+    height: 0;
+    border-top: 10px solid rgba(0,0,0,0.8);
+    border-bottom: 0 solid rgba(0,0,0,0.8);
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    background: transparent;
+  }
+
+  </style>
+</head>
+<body>
+
+  <a class="thumb">
+    <strong>I am a happy cat !!!</strong>
+    <img src="img/cat.jpg">
+  </a>
+
+</body>
+</html>

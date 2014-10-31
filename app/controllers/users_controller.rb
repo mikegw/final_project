@@ -12,7 +12,6 @@ class UsersController < ApplicationController
     @friends = current_user.friends
     @sent_request_users = current_user.pending_friends
     @received_request_users = current_user.potential_friends
-
   end
 
   def new

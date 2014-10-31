@@ -2,20 +2,14 @@
 <html>
 <head>
   <title>FinalProject</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
 </head>
+
 <body>
 
-  <% if signed_in? %>
-    <%= button_to "Sign out", session_url, method: :delete %>
-  <% else %>
-    <a href="<%= new_user_url %>">Sign Up</a>
-  <% end %>
-
-
-<%= yield %>
+  <%= yield %>
 
 </body>
 </html>

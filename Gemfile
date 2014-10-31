@@ -28,7 +28,9 @@ gem 'spring',        group: :development
 
 gem 'bcrypt', '~> 3.1.7'
 
-gem 'rails_12factor'
+gem 'rails_12factor',  group: :production
+
+gem 'underscore-rails'
 
 # Use unicorn as the app server
 # gem 'unicorn'

@@ -1,26 +1,8 @@
-<a href="<%= user_url(current_user) %>">Home</a>
+<div id="user-id" data-id="<%= current_user.id if signed_in? %>"></div>
+<header class="navbar">
+  <nav class="user-class-container"></nav>
 
-<h1><%= h @user.username %> is awesome</h1>
-
-<% if @user == current_user %>
-  <h2>So many people want to be <%= h @user.username %>'s friend</h2>
-  <ul>
-    <% @received_request_users.each do |user| %>
-      <li class="friend">
-        <a href="<%= user_friendships_url(user) %>" ><%= h user.username %></a>
-
-        <%= button_to "Accept",
-          accept_user_friendships_url(user),
-          method: :get %>
-        <%= button_to "Reject",
-          reject_user_friendships_url(user),
-          method: :get %>
-      </li>
-    <% end %>
-  </ul>
-
-  <h2>Add a friend</h2>
-  <form action="<%= search_user_url(@user) %>" method="get" accept-charset="utf-8">
+  <form class="search" id="user-search" action="<%= search_user_url(@user) %>" method="get" accept-charset="utf-8">
     <input
       type="hidden"
       name="authenticity_token"
@@ -29,12 +11,14 @@
 
     <input type="text" name="searchstring">
 
-    <input type="submit" value="Search for your friend">
+    <button class="submit-button">Search for your friend</button>
   </form>
 
-  <br>
+  <% flash[:errors] && flash[:errors].each do |error| %>
+    <%= error %><br>
+  <% end %>
 
-  <ul>
+  <ul class="user-search-results">
     <% @search.each do |user| %>
       <% next if user == current_user %>
       <li class="searched">
@@ -55,107 +39,102 @@
       </li>
     <% end %>
   </ul>
-<% else %>
-  <% if @friends.include?(@user) %>
-    <%= button_to "Unfriend",
-      user_friendships_url(@user),
-      method: :delete %>
-  <% elsif @sent_request_users.include?(@user) %>
-    <p>Request Sent</p>
-  <% else %>
-    <%= button_to "Befriend",
-      user_friendships_url(@user),
-      method: :post %>
-  <% end %>
-<% end %>
 
-<h2><%= h @user.username %> has so many friends</h2>
-<ul>
-  <% @user.friends.each do |friend| %>
-    <li class="friend">
-      <a href="<%= user_url(friend) %>"><%= h friend.username %></a>
-    </li>
-  <% end %>
-</ul>
-
-
-
-<% if @user == current_user %>
-  <h2>Create a new List</h2>
-  <form action="<%= lists_url %>" method="POST">
-    <input
-      type="hidden"
-      name="authenticity_token"
-      value="<%= form_authenticity_token %>">
-
-    <label for="list-title">List Name</label>
-    <input type="text" name="list[title]" id="list-title">
-
-    <br>
-
-    <input type="radio" name="list[access]" id="list-access0" value="PUBLIC">
-    <label for="list-access0">Public</label>
-
-    <br>
-
-    <input type="radio" name="list[access]" id="list-access1" value="FRIENDS">
-    <label for="list-access1">Friends Only</label>
-
-    <br>
-
-    <input type="radio" name="list[access]" id="list-access2" value="PRIVATE">
-    <label for="list-access2">Private</label>
-
-    <br>
-
-
-    <p><input type="submit" value="Save"></p>
-  </form>
-<% end %>
-
-<% flash[:errors] && flash[:errors].each do |error| %>
-  <%= error %><br>
-<% end %>
-
-<h2> <%= h @user.username %> has all these amazing lists</h2>
-
-<ul>
-  <% @user.lists.each do |list| %>
-    <% if list.access == "PUBLIC" || list.owner == current_user || list.access == "FRIENDS" && @user.friends.include?(current_user) %>
-      <li class="<%= list.access.downcase %>"><%= h list.title %></li>
-
-      <!-- form -->
-
-
+  <nav class="nav-buttons">
+    <button class="nav-button" id="notifications-button"></button>
+    <button class="nav-button" id="chat-button"></button>
+    <button class="nav-button" id="search-button"></button>
+    <nav class="session-button">
+    <% if signed_in? %>
+      <%= button_to "Sign out", session_url, method: :delete %>
+    <% else %>
+      <a href="<%= new_user_url %>">Sign Up</a>
+    </nav>
     <% end %>
-  <% end %>
-</ul>
+  </nav>
 
-<h2> Check out those list items!</h2>
+</header>
 
-<ul>
-  <% @user.lists.each do |list| %>
-    <% if list.access == "PUBLIC" || list.owner == current_user %>
-      <li class="<%= list.access.downcase %>"><%= h list.title %>
-        <form action="<%= list_items_url(list) %>" method="post">
+<main>
+  <section class="sidebar">
 
-          <%= form_auth %>
-          <label for="list_item_content">
-          <input type="text" name="list_item[content]" id="list_item_content">
+    <ul class="default-lists"></ul>
 
-          <p><input type="submit" value="Continue &rarr;"></p>
-        </form>
+    <ul class="user-list">
+      <% @user.lists.each do |list| %>
+        <% if list.access == "PUBLIC" || list.owner == current_user || list.access == "FRIENDS" && @user.friends.include?(current_user) %>
+          <li class="<%= list.access.downcase %>"><p><%= h list.title %></p></li>
+        <% end %>
+      <% end %>
+    </ul>
 
+    <button class="add-list-button">+</button>
+
+  </section>
+
+  <section class="listbar"
+    <form class="add-item" action="<%= list_items_url(current_list) %>" method="post">
+      <input type="text" name="list_item[content]" id="list_item_content">
+      <%= form_auth %>
+      <button class="add-item-button">Add Item</button>
+    </form>
+
+    <section class="items">
+      <% @user.lists.each do |list| %>
+        <% if list.access == "PUBLIC" || list.owner == current_user %>
+            <ul>
+              <% list.list_items.each do |item| %>
+                <li>
+                  <h4><%= h item.content %></h4>
+                  <p><%= h item.details %></p>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+
+        <% end %>
+      <% end %>
+    </section>
+
+  </section>
+
+  <footer>
+    <nav class="list-navs"></nav>
+    <button class="friends-button"></button>
+    <section class="friends-box">
+      <div class="friends">
+        <% @user.friends.each do |friend| %>
+          <li class="friend">
+            <a href="<%= user_url(friend) %>"><%= h friend.username %></a>
+          </li>
+        <% end %>
+      </div>
+      <div class="friend-requests">
         <ul>
-          <% list.list_items.each do |item| %>
-            <li>
-              <h4><%= h item.content %></h4>
-              <p><%= h item.details %></p>
+          <% @received_request_users.each do |user| %>
+            <li class="friend">
+              <a href="<%= user_friendships_url(user) %>" ><%= h user.username %></a>
+
+              <%= button_to "Accept",
+                accept_user_friendships_url(user),
+                method: :get %>
+              <%= button_to "Reject",
+                reject_user_friendships_url(user),
+                method: :get %>
             </li>
           <% end %>
         </ul>
-      </li>
+      </div>
 
-    <% end %>
-  <% end %>
-</ul>
+
+    </section>
+  </footer>
+
+</main>
+
+<script>
+  $(document).ready(function(){
+    console.log("intializing from show.html.erb")
+    FinalProject.initialize();
+  });
+</script>

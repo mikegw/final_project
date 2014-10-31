@@ -3,13 +3,16 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  helper_method :current_user, :signed_in?, :require_signed_in!
+  helper_method :current_user, :current_list, :signed_in?, :require_signed_in!
 
 
   def current_user
     @current_user ||= User.find_by_session_token(session[:session_token])
   end
 
+  def current_list
+    @current_list ||= (current_user.lists.first || current_user.lists.create!({title: "New List", access: "PRIVATE"}))
+  end
 
   def signed_in?
     !!current_user

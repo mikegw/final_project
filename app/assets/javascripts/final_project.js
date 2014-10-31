@@ -4,10 +4,8 @@ window.FinalProject = {
   Views: {},
   Routers: {},
   initialize: function() {
-    alert('Hello from Backbone!');
+    this.router = new FinalProject.Routers.Router();
+    //this.router.initialize();
+    Backbone.history.start({root: "/api"});
   }
 };
-
-$(document).ready(function(){
-  FinalProject.initialize();
-});
