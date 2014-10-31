@@ -9,3 +9,5 @@ class Share < ActiveRecord::Base
 
   belongs_to :list,
     inverse_of: :list_share
+
+end
