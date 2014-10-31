@@ -6,6 +6,6 @@ window.FinalProject = {
   initialize: function() {
     this.router = new FinalProject.Routers.Router();
     //this.router.initialize();
-    Backbone.history.start({root: "/api"});
+    Backbone.history.start();
   }
 };

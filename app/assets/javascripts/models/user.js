@@ -3,7 +3,7 @@ FinalProject.Models.User = Backbone.Model.extend({
 
   lists: function () {
     if(!this._lists) {
-      this._lists = new TrelloClone.Collections.Lists([], { user: this });
+      this._lists = new FinalProject.Collections.Lists([], { user: this });
     }
 
     return this._lists;

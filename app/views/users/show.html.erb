@@ -1,6 +1,9 @@
 <div id="user-id" data-id="<%= current_user.id if signed_in? %>"></div>
 <header class="navbar">
-  <nav class="user-class-container"></nav>
+  <nav class="user-class-container">
+    <h1><%= h @user.username %></h1>
+      <p><%= h @user.email %></p>
+  </nav>
 
   <form class="search" id="user-search" action="<%= search_user_url(@user) %>" method="get" accept-charset="utf-8">
     <input
@@ -72,7 +75,7 @@
 
   </section>
 
-  <section class="listbar"
+  <section class="listbar">
     <form class="add-item" action="<%= list_items_url(current_list) %>" method="post">
       <input type="text" name="list_item[content]" id="list_item_content">
       <%= form_auth %>
@@ -82,7 +85,12 @@
     <section class="items">
       <% @user.lists.each do |list| %>
         <% if list.access == "PUBLIC" || list.owner == current_user %>
+            <br>
+            <h1><%= h list.title %></h1>
+            <br>
             <ul>
+
+
               <% list.list_items.each do |item| %>
                 <li>
                   <h4><%= h item.content %></h4>
@@ -132,9 +140,9 @@
 
 </main>
 
-<script>
-  $(document).ready(function(){
-    console.log("intializing from show.html.erb")
-    FinalProject.initialize();
-  });
-</script>
+// <script>
+//   $(document).ready(function(){
+//     console.log("intializing from show.html.erb")
+//     FinalProject.initialize();
+//   });
+// </script>
