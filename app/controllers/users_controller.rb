@@ -39,7 +39,7 @@ class UsersController < ApplicationController
   def search
     @user = User.find(params[:id])
     if /^[[:alpha:]\s@\.]+$/.match(params[:searchstring])
-      @search = User.where("username LIKE '#{params[:searchstring]}%' OR email LIKE '#{params[:searchstring]}%'")
+      @search = User.where("username LIKE '%#{params[:searchstring]}%' OR email LIKE '%#{params[:searchstring]}%'")
     else
       @search = []
     end

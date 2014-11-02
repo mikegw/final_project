@@ -1,15 +1,14 @@
-FinalProject.Views.UserShow = Backbone.CompositeView.extend({
+FinalProject.Views.UserSearch = Backbone.View.extend({
 
   initialize: function () {
     this.listenTo(this.model, 'sync', this.render)
   },
 
-  template: JST["user/show"],
+  template: JST["user/search"],
 
   render: function () {
     event.preventDefault();
-    console.log("rendering UserShow with model", this.model)
-    console.log("this.model has username", this.model.get("username"));
+    console.log("rendering UserSearch for", this.model.get("username"));
     var content = this.template({
       user: this.model
     });
