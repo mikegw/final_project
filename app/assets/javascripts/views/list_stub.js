@@ -1,14 +1,20 @@
 FinalProject.Views.ListStub = Backbone.View.extend({
 
-  initialize: function () {
+  initialize: function (options) {
+    this.user = options.user;
     this.listenTo(this.model, 'sync', this.render)
   },
+
+  tagName: 'li',
 
   template: JST["list/stub"],
 
   events: {
     "click button": function () {
-      Backbone.history.navigate("/lists/" + this.model.id)
+      console.log("trigger render of list", this.model)
+      $(".current-list").removeClass("current-list");
+      this.$("button").addClass("current-list");
+      this.user.trigger("stubClick", {list: this.model})
     }
   },
 

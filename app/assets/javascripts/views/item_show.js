@@ -1,6 +1,6 @@
 FinalProject.Views.ItemShow = Backbone.View.extend({
 
-  tagname: 'li',
+  tagName: 'li',
 
   template: JST["item/show"],
 

@@ -1,9 +1,11 @@
 FinalProject.Views.ListShow = Backbone.CompositeView.extend({
 
-  initialize: function () {
+  initialize: function (options) {
+    this.user = options.user;
     this.collection = this.model.items();
     this.listenTo(this.model, 'sync', this.render)
     this.listenTo(this.collection, 'add', this.addItem);
+    this.listenTo(this.user, "clickStub", this.renderList)
   },
 
   template: JST["list/show"],
@@ -22,10 +24,8 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
     });
 
     this.$el.html(content);
-    this.$el.data("list-id", this.model.id);
 
     this.collection.each(this.addItem.bind(this));
     return this;
   }
-
 })

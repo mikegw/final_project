@@ -9,4 +9,22 @@ class Api::UsersController < ApplicationController
     render :show
   end
 
+  def search
+    @user = current_user
+    @matchedfriends = @user.friends.where(
+      "users.username LIKE '?'",
+      "%" + params[:search_string] + "%"
+    ).limit(5)
+
+    if @matchedfriends.length < 5
+      @matchedusers = User.where(
+        "users.username LIKE '?'",
+        "%" + params[:search_string] + "%"
+      ).limit(5 - @matchedfriends.length)
+    end
+
+    render :search
+  end
+
+
 end

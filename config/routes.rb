@@ -47,5 +47,6 @@ Rails.application.routes.draw do
     end
 
     get 'current', to: "users#current"
+    get 'search/:search_string', to: "users#search"
   end
 end

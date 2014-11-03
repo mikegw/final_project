@@ -1,5 +1,7 @@
 FinalProject.Views.ListIndex = Backbone.CompositeView.extend({
-  initialize: function () {
+  initialize: function (options) {
+    console.log("listindex options", options)
+    this.user = options.user;
     this.collection = this.model.lists();
     this.listenTo(this.collection, 'add', this.addItem);
   },
@@ -8,7 +10,8 @@ FinalProject.Views.ListIndex = Backbone.CompositeView.extend({
 
   addList: function (list) {
     var view = new FinalProject.Views.ListStub({
-      model: list
+      model: list,
+      user: this.model
     });
     this.addSubview('.list-stubs', view);
   },
