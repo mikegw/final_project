@@ -6,6 +6,9 @@ FinalProject.Views.UserNav = Backbone.CompositeView.extend({
 
   template: JST["user/nav"],
 
+  tagName: "header",
+  className: "navbar group",
+
   render: function () {
     var content = this.template()
     this.$el.html(content);

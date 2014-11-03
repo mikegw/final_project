@@ -4,6 +4,8 @@ FinalProject.Views.ItemShow = Backbone.View.extend({
 
   template: JST["item/show"],
 
+  className: "item group",
+
   render: function () {
 
     var content = this.template({

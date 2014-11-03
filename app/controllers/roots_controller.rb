@@ -1,5 +1,7 @@
 class RootsController < ApplicationController
 
+  before_filter :require_signed_in!
+
   def show
     @user = current_user
     @search = []

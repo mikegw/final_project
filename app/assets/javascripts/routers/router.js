@@ -9,7 +9,7 @@ FinalProject.Routers.Router = Backbone.Router.extend({
 
   initialize: function (options) {
     console.log("Router starting up...")
-    this.$el = $("main");
+    this.$el = $("body");
 
   },
 

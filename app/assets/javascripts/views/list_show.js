@@ -8,6 +8,9 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
     this.listenTo(this.user, "clickStub", this.renderList)
   },
 
+  tagName: "section",
+  className: "listbar",
+
   template: JST["list/show"],
 
   addItem: function (item) {

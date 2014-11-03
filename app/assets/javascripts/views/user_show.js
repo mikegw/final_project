@@ -5,6 +5,9 @@ FinalProject.Views.UserShow = Backbone.CompositeView.extend({
     this.listenTo(this.model, "stubClick", this.renderList)
   },
 
+  tagName: "section",
+  className: "content-container",
+
   template: JST["user/show"],
 
   render: function () {
@@ -35,32 +38,44 @@ FinalProject.Views.UserShow = Backbone.CompositeView.extend({
     var sidebarView = new FinalProject.Views.ListIndex({
       model: this.model
     });
+    this.addSubview('.content', navView);
+    this.addSubview('.content', sidebarView);
 
-    this.addSubview(".navbar", navView);
-    this.addSubview('.sidebar', sidebarView);
+    this.$(".content").append($('<section>').addClass("listbar-container"));
+    this.$(".listbar-container").append($('<feature>').addClass("background-image"));
 
-    if (this.model.lists().length > 0) {
-      var listbarView = new FinalProject.Views.ListShow({
-        model: this.model.lists().first(),
-        user: this.model
-      });
-      this.addSubview('.listbar-content', listbarView);
-    }
+    console.log(this.$el.html())
+
+    var listbarView = new FinalProject.Views.ListShow({
+      model: (function () {
+        if (this.model.lists().length > 0) {
+          return this.model.lists().first()
+        } else {
+          this.model.lists().set({title: "New List"}, {parse: true})
+          return this.model.lists().first()
+        }
+      }).bind(this)(),
+
+      user: this.model
+    });
+    this.addSubview('.listbar-container', listbarView);
 
     return this;
   },
 
   renderList: function (event) {
     console.log("renderlist caught event", event)
-    _(this.subviews('.listbar-content')).each((function(view) {
-      this.removeSubview('.listbar-content', view);
+    _(this.subviews('.listbar-container')).each((function(view) {
+      if(view["className"] === "listbar") {
+        this.removeSubview('.listbar-container', view);
+      }
     }).bind(this));
 
     var listbarView = new FinalProject.Views.ListShow({
       model: event.list,
       user: this.model
     });
-    this.addSubview('.listbar-content', listbarView);
+    this.addSubview('.listbar-container', listbarView);
   }
 
 })

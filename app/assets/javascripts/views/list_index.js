@@ -5,6 +5,9 @@ FinalProject.Views.ListIndex = Backbone.CompositeView.extend({
     this.collection = this.model.lists();
     this.listenTo(this.collection, 'add', this.addItem);
   },
+  
+  tagName: "section",
+  className: "sidebar",
 
   template: JST["list/index"],
 
