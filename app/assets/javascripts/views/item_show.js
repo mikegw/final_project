@@ -1,19 +1,38 @@
-FinalProject.Views.ItemShow = Backbone.View.extend({
-
-  tagName: 'li',
+FinalProject.Views.ItemShow = Backbone.CompositeView.extend({
 
   template: JST["item/show"],
 
-  className: "item group",
+  tagName: "section",
+  className: "item modal",
+  id: "item-modal",
+
+  events: {
+    "click .modal-screen": "back"
+  },
 
   render: function () {
-
+    console.log("rendering itemshow for item", this.model)
     var content = this.template({
       item: this.model
     });
 
     this.$el.html(content);
+
+    var stub = new FinalProject.Views.ItemStub({
+      model: this.model
+    });
+
+    this.addSubview('.stub-container', stub);
     return this;
+  },
+
+  back: function () {
+    _(this.subviews(".stub-container")).each(function(sub){
+      sub.remove();
+    });
+    this.remove();
+
   }
+
 
 })

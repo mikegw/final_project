@@ -8,20 +8,29 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
     this.listenTo(this.user, "clickStub", this.renderList)
   },
 
+  events: {
+    'click .item-button': 'showItem',
+    'submit .new-item': "addItemToList"
+  },
+
   tagName: "section",
   className: "listbar",
 
   template: JST["list/show"],
 
+  addItemToList: function () {
+    
+  }
+
   addItem: function (item) {
-    var view = new FinalProject.Views.ItemShow({
+    var view = new FinalProject.Views.ItemStub({
       model: item
     });
     this.addSubview('.list-items', view);
   },
 
   render: function () {
-    console.log("rendering ListShow with list", this.model)
+    console.log("rendering ListShow with list", this.model);
     var content = this.template({
       list: this.model
     });
@@ -30,5 +39,24 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
 
     this.collection.each(this.addItem.bind(this));
     return this;
+  },
+
+  showItem: function (event) {
+    var content = $(event.currentTarget).data("content");
+
+    clickedItem = this.collection.find(function (item) {
+      return item.get("content") === content;
+    });
+
+    var modal = new FinalProject.Views.ItemShow({
+      model: clickedItem
+    });
+
+    this.addSubview('.item-modal-container', modal);
+
+    setTimeout(function(){
+      this.$("#item-modal").addClass("is-active");
+      this.$("#item-modal-content").addClass("is-active");
+    }.bind(this), 0.5);
   }
 })

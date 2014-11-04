@@ -1,5 +1,28 @@
-<button class="item-checkbox"></button>
-<button class="item-button">
-  <h2><%- item.escape("content") %></h2>
-</button>
-<button class="item-star"></button>
+<div id="item-modal-content" class="modal-content">
+
+  <section class="stub-container"></section>
+
+  <article class="details"><%=item.get("details")%></article>
+
+  <section class="actions-container">
+    <button class="assign">Assign to</button>
+    <button class="due">Set Due Date</button>
+    <button class="remind">Remind Me</button>
+  </section>
+
+  <section class="subtasks-container">
+    <ul class="subtasks"></ul>
+    <button class="add-subtask">+</button>
+  </section>
+
+  <feature class="comments">
+  </feature>
+
+  <section class=modal-footer>
+    <p>Created by <%=item.get("details")%></p>
+    <button class="delete"></button>
+  </section>
+
+</div>
+
+<div class="modal-screen js-hide-modal"></div>
