@@ -3,7 +3,7 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
   initialize: function (options) {
     this.user = options.user;
     this.collection = this.model.items();
-    this.listenTo(this.model, 'sync', this.render)
+    this.listenTo(this.model, 'sync', this.render);
     this.listenTo(this.collection, 'add', this.addItem);
     this.listenTo(this.user, "clickStub", this.renderList)
   },
@@ -18,11 +18,24 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
 
   template: JST["list/show"],
 
-  addItemToList: function () {
-    
-  }
+  addItemToList: function (event) {
+    event.preventDefault();
+    var params = $(event.currentTarget).serializeJSON();
+    var newItem = new FinalProject.Models.Item({content: params["item-text"]});
+    newItem.save({list_id: this.model.id}, {
+      success: (function () {
+        console.log("saved!");
+        this.collection.add(newItem);
+      }).bind(this),
+      error: function () {
+        console.log(newItem.errors)
+      }
+    });
+
+  },
 
   addItem: function (item) {
+    console.log("adding", item);
     var view = new FinalProject.Views.ItemStub({
       model: item
     });

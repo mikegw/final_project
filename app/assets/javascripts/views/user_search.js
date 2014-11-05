@@ -1,7 +1,9 @@
 FinalProject.Views.UserSearch = Backbone.CompositeView.extend({
 
-  initialize: function () {
+  initialize: function (options) {
     this.results = new FinalProject.Collections.SearchResults();
+    this.searchContainer = options.searchContainer;
+    this.wrapper = options.wrapper
   },
 
   template: JST["user/search"],
@@ -17,9 +19,9 @@ FinalProject.Views.UserSearch = Backbone.CompositeView.extend({
     event.preventDefault();
     console.log("rendering UserSearch for", this.model.get("username"));
 
-    var content = this.template();
-
-    console.log(content)
+    var content = this.template({
+      searchContainer: this.searchContainer
+    });
 
     this.$el.html(content);
     return this;
@@ -27,9 +29,12 @@ FinalProject.Views.UserSearch = Backbone.CompositeView.extend({
 
   addResult: function (user) {
     console.log("adding result", user, "with username", user.get("username"));
+    realUser = new FinalProject.Models.User(user.attributes)
+    FinalProject.Collections.users.add(realUser);
     var result = new FinalProject.Views.UserStub({
       model: user,
-      tagName: "li"
+      tagName: "li",
+      wrapper: this.wrapper
     });
 
     this.addSubview('.search-results', result);
@@ -44,9 +49,9 @@ FinalProject.Views.UserSearch = Backbone.CompositeView.extend({
   },
 
   submit: function (){
-    console.log("caught by", this);
     event.preventDefault();
-    var input = $(".search-input").val();
+    var selector = "." + this.searchContainer + "-search-input";
+    var input = $("#" + this.searchContainer + "-search-input").val();
     this.filterResults(input);
     this.results.fetch({
       data: {

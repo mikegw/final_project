@@ -10,7 +10,6 @@ FinalProject.Routers.Router = Backbone.Router.extend({
   initialize: function (options) {
     console.log("Router starting up...")
     this.$el = $("body");
-
   },
 
   fetchCurrentUser: function () { //fix this - need to think about when to fetch

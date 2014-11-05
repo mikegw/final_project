@@ -46,6 +46,8 @@ Rails.application.routes.draw do
       resources :list_items, as: :items, only: [:create, :update, :destroy]
     end
 
+    resources :shares, only: [:create, :destroy]
+
     get 'current', to: "users#current"
     get 'search', to: "users#search"
   end

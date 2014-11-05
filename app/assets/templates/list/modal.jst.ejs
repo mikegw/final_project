@@ -1,0 +1,59 @@
+<div id="list-modal-content" class="modal-content">
+
+  <!-- <section class="stub-container"></section>
+
+  <article class="details"><%=list.get("details")%></article>
+
+  <section class="actions-container">
+    <button class="assign">Assign to</button>
+    <button class="due">Set Due Date</button>
+    <button class="remind">Remind Me</button>
+  </section>
+
+  <section class="subtasks-container">
+    <ul class="subtasks"></ul>
+    <button class="add-subtask">+</button>
+  </section>
+
+  <figure class="comments">
+  </figure>
+
+  <section class=modal-footer>
+    <p>Created by <%=list.get("details")%></p>
+    <button class="delete"></button>
+  </section> -->
+
+  <h1>Edit List</h1>
+
+  <form class="edit-list-form">
+    <input type="text" name="list[title]" placeholder="List name">
+
+    <label>
+       <input type="radio" name="list[access]" value="PUBLIC">
+       <h2>PUBLIC</h2>
+    </label>
+
+    <label>
+       <input type="radio" name="list[access]" value="FRIENDS">
+       <h2>FRIENDS ONLY</h2>
+    </label>
+
+    <label>
+       <input type="radio" name="list[access]" value="PRIVATE">
+       <h2>PRIVATE</h2>
+    </label>
+
+    <figure class="list-modal-searchbar-container">
+    </figure>
+
+    <h3> Collaborators</h3>
+
+    <figure class="list-modal-collaborators-container">
+    </figure>
+
+    <button id=#save-button>Save</button>
+  </form>
+
+</div>
+
+<div class="modal-screen js-hide-modal"></div>

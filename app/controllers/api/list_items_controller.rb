@@ -1,4 +1,4 @@
-class ListItemsController < ApplicationController
+class Api::ListItemsController < ApplicationController
 
   def create
     list = List.find(params[:list_id])
@@ -6,7 +6,7 @@ class ListItemsController < ApplicationController
     unless @list_item.save
       flash[:errors] = @list_item.errors.full_messages
     end
-    redirect_to user_url(current_user)
+    render json: @list_item
   end
 
   def update
@@ -15,7 +15,7 @@ class ListItemsController < ApplicationController
     unless @list_item.save
       flash[:errors] = @list_item.errors.full_messages
     end
-    redirect_to user_url(current_user)
+    render json: @list_item
   end
 
   def destroy

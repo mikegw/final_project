@@ -1,6 +1,8 @@
 FinalProject.Models.Item = Backbone.Model.extend({
 
-  urlRoot: "/api/lists/" + this.list_id + "/list_items"
+  urlRoot: function () {
+    return "/api/lists/" + this.get("list_id") + "/list_items";
+  }
 
 
 

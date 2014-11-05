@@ -19,7 +19,8 @@ FinalProject.Views.UserNav = Backbone.CompositeView.extend({
     });
 
     var search = new FinalProject.Views.UserSearch({
-      model: this.model
+      model: this.model,
+      searchContainer: "user-nav"
     });
 
     this.addSubview(".user-nav-container", stub);

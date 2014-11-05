@@ -1,5 +1,13 @@
-<img></img>
-<section class="user-info">
+<% if (wrapper) { %>
+<%= wrapper %>
+<%  } %>
+<img>
+<section class="user-info" data-id="<%= user.get("id") %>">
   <h1><%= user.get("username") %></h1>
   <h2><%= user.get("email") %></h2>
 </section>
+<% if (wrapper) { %>
+  <% _(wrapper.match(/<([a-z]+)/g).reverse()).each(function(wrap) { %>
+<%= "</"+ wrap.slice(1) + ">" %>
+  <% }); %>
+<%  } %>

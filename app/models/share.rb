@@ -8,6 +8,6 @@ class Share < ActiveRecord::Base
     inverse_of: :collaborations
 
   belongs_to :list,
-    inverse_of: :list_shares
+    inverse_of: :shares
 
 end

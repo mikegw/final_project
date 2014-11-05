@@ -14,7 +14,9 @@ class ListsController < ApplicationController
 
   def update
     @list = current_user.lists.find(params[:id])
-    unless @list.save
+    transaction do
+      @list.update(list_params)
+      @list.collaborations.
       flash[:errors] = @list.errors.full_messages
     end
     redirect_to user_url(current_user)
