@@ -12,8 +12,9 @@ class Api::ListItemsController < ApplicationController
   def update
     list = List.find(params[:list_id])
     @list_item = list.list_items.find(params[:id])
-    unless @list_item.save
+    unless @list_item.update(list_item_params)
       flash[:errors] = @list_item.errors.full_messages
+      puts "FAILED"
     end
     render json: @list_item
   end

@@ -4,12 +4,13 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
     this.user = options.user;
     this.collection = this.model.items();
     this.listenTo(this.model, 'sync', this.render);
-    this.listenTo(this.collection, 'add', this.addItem);
-    this.listenTo(this.user, "clickStub", this.renderList)
+    this.listenTo(this.collection, 'add', this.addItem.bind(this));
+    this.listenTo(this.user, "clickStub", this.renderList);
+    this.listenTo(this.collection, 'change', function(){setTimeout(this.render.bind(this), 1000)}.bind(this));
   },
 
   events: {
-    'click .item-button': 'showItem',
+    'click .item': 'showItem',
     'submit .new-item': "addItemToList"
   },
 
@@ -31,7 +32,7 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
         console.log(newItem.errors)
       }
     });
-
+    $(".new-item-input").val('');
   },
 
   addItem: function (item) {
@@ -39,7 +40,15 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
     var view = new FinalProject.Views.ItemStub({
       model: item
     });
-    this.addSubview('.list-items', view);
+    if (item.get("completed")) {
+      this.addSubview('.completed-items', view);
+      if (this.subviews(".completed-items").length === 1) {
+        this.$(".completed-button").addClass("active");
+      }
+    } else {
+      this.addSubview('.list-items', view);
+    }
+
   },
 
   render: function () {
@@ -55,7 +64,9 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
   },
 
   showItem: function (event) {
+
     var content = $(event.currentTarget).data("content");
+    console.log(content);
 
     clickedItem = this.collection.find(function (item) {
       return item.get("content") === content;

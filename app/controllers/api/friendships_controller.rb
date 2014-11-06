@@ -1,4 +1,4 @@
-class FriendshipsController < ApplicationController
+class Api::FriendshipsController < ApplicationController
 
   def create
     user = User.find(params[:user_id])
@@ -9,7 +9,7 @@ class FriendshipsController < ApplicationController
       flash[:errors] = friendship.errors.full_messages
     end
     puts "redirecting to " + URI(request.referer).path
-    redirect_to URI(request.referer).path
+    render json: user
   end
 
   def accept
@@ -34,7 +34,7 @@ class FriendshipsController < ApplicationController
       end
     end
 
-    redirect_to URI(request.referer).path
+    render json: user
   end
 
   def reject
@@ -68,7 +68,7 @@ class FriendshipsController < ApplicationController
       end
     end
 
-    redirect_to URI(request.referer).path
+    render json: user
   end
 
   private

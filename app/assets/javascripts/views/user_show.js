@@ -38,8 +38,14 @@ FinalProject.Views.UserShow = Backbone.CompositeView.extend({
     var sidebarView = new FinalProject.Views.ListIndex({
       model: this.model
     });
+
+    var footerView = new FinalProject.Views.Footer({
+      model: FinalProject.router.currentUser
+    });
+
     this.addSubview('.content', navView);
     this.addSubview('.content', sidebarView);
+
 
     this.$(".content").append($('<section>').addClass("listbar-container"));
     this.$(".listbar-container").append($('<figure>').addClass("background-image"));
@@ -52,6 +58,8 @@ FinalProject.Views.UserShow = Backbone.CompositeView.extend({
       });
       this.addSubview('.listbar-container', listbarView);
     }
+
+    this.addSubview(".content", footerView);
     return this;
   },
 

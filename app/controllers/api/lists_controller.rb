@@ -3,9 +3,10 @@ class ListsController < ApplicationController
   def create
     @list = current_user.lists.new(list_params)
     unless @list.save
-      flash[:errors] = @list.errors.full_messages
+      # flash[:errors] = @list.errors.full_messages
+      puts "FAILED TO UPDATE"
     end
-    redirect_to user_url(current_user)
+    render json: @list
   end
 
   def edit
@@ -14,12 +15,15 @@ class ListsController < ApplicationController
 
   def update
     @list = current_user.lists.find(params[:id])
-    transaction do
-      @list.update(list_params)
-      @list.collaborations.
-      flash[:errors] = @list.errors.full_messages
+    # transaction do
+    #   @list.update(list_params)
+    #   @list.collaborations.
+    #   flash[:errors] = @list.errors.full_messages
+    # end
+    unless @list.update(list_params)
+      puts "FAILED TO UPDATE"
     end
-    redirect_to user_url(current_user)
+    render json: @list
   end
 
   def destroy

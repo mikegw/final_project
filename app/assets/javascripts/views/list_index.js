@@ -42,6 +42,7 @@ FinalProject.Views.ListIndex = Backbone.CompositeView.extend({
     this.$el.html(content);
 
     this.collection.each(this.addList.bind(this));
+    this.$(".list-stubs li:first-child button").addClass("current-list")
     this.sharedLists.each(this.addSharedList.bind(this));
     return this;
   },

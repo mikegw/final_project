@@ -25,3 +25,15 @@ json.shared_lists @user.shared_lists do |list|
   end
 
 end
+
+json.friends @user.friends do |friend|
+  json.extract! friend, :id, :username, :email
+end
+
+json.potential_friends @user.potential_friends do |friend|
+  json.extract! friend, :id, :username, :email
+end
+
+json.pending_friends @user.pending_friends do |friend|
+  json.extract! friend, :id, :username, :email
+end
