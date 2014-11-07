@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     end
 
     resources :shares, only: [:create, :destroy]
+    resources :notifications, only: [:index, :show]
 
     get 'current', to: "users#current"
     get 'search', to: "users#search"

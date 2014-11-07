@@ -137,6 +137,83 @@ body {
 }
 
 
+.notifications-container {
+  position: relative;
+
+  .triangle {
+    opacity: 0;
+    height:0;
+    width: 0;
+    border-bottom: 15px solid white;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    position: absolute;
+    top: 60px;
+    right: 210px;
+    transition: top 1s, opacity 1s;
+  }
+
+  .notifications-list {
+    position: absolute;
+    background: white;
+    right: 130px;
+    top: 60px;
+    overflow: hidden;
+    height: 0;
+    width: 350px;
+    z-index: 10;
+    transition: height 1s;
+
+
+
+    .notification {
+      margin: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid grey;
+    }
+
+    .notification:last-child {
+      border-bottom: none;
+    }
+
+    .note-text {
+      float: left;
+      width: 200px;
+    }
+
+    .note-time {
+      float: right;
+    }
+
+  }
+
+  .notifications-list.active {
+    height: 200px;
+    overflow: auto;
+    transition: height 1s;
+
+  }
+
+  .notifications-list:hover {
+    height: 200px;
+    overflow: auto;
+    transition: height 1s;
+
+  }
+
+  .notifications-list:hover + .triangle {
+    opacity: 1;
+    top: 45px;
+    transition: top 1s, opacity 1s;
+  }
+
+  .notifications-list.active + .triangle {
+    opacity: 1;
+    top: 45px;
+    transition: top 1s, opacity 1s;
+  }
+}
+
 
 .search-input {
   margin-top: 3px;

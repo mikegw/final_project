@@ -48,6 +48,23 @@ class User < ActiveRecord::Base
   has_many :stalkers, through: :rejected_friend_requests, source: :befriender
 
 
+  has_many :notifications, -> { order('created_at desc').limit(50) }, inverse_of: :user, dependent: :destroy
+
+  has_many :unread_notifications,
+    -> { where(is_read: false) },
+    class_name: "Notification",
+    inverse_of: "user",
+    dependent: :destroy
+
+  has_many :read_notifications,
+    -> { where(is_read: true) },
+    class_name: "Notification",
+    inverse_of: "user",
+    dependent: :destroy
+
+  has_many :completions, inverse_of: :user
+
+
   # def potential_friends
 #     User.joins("INNER JOIN friendships ON users.id = friendships.befriender_id")
 #       .where("friendships.befriendee_id = ? AND friendships.status = 'PENDING'", self.id)

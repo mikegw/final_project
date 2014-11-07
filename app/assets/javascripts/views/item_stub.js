@@ -37,7 +37,7 @@ FinalProject.Views.ItemStub = Backbone.View.extend({
     console.log(this.model.get("completed"));
     this.model.save({
       "completed": !this.model.get("completed")}, {
-        success: function() {
+        success: function() {          
           console.log("Saved item", this.model)
         }.bind(this)
       }

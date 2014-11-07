@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141030150139) do
+ActiveRecord::Schema.define(version: 20141107043040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(version: 20141030150139) do
   end
 
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "completions", force: true do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "item_id",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "completions", ["user_id", "item_id"], name: "index_completions_on_user_id_and_item_id", using: :btree
 
   create_table "friendships", force: true do |t|
     t.integer  "befriender_id",                     null: false
@@ -50,6 +59,16 @@ ActiveRecord::Schema.define(version: 20141030150139) do
   end
 
   add_index "lists", ["owner_id"], name: "index_lists_on_owner_id", using: :btree
+
+  create_table "notifications", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "notifiable_id"
+    t.string   "notifiable_type"
+    t.integer  "event_id"
+    t.boolean  "is_read"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "shares", force: true do |t|
     t.integer "user_id", null: false

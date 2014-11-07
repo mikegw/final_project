@@ -19,9 +19,6 @@ FinalProject.Views.UserShow = Backbone.CompositeView.extend({
       user: this.model
     });
 
-    console.log(content);
-
-
     this.$el.html(content);
 
     // if (!$.isEmptyObject(this.subviews)){
@@ -50,7 +47,6 @@ FinalProject.Views.UserShow = Backbone.CompositeView.extend({
     this.$(".content").append($('<section>').addClass("listbar-container"));
     this.$(".listbar-container").append($('<figure>').addClass("background-image"));
 
-    console.log(this.$el.html())
     if (this.model.lists().length > 0) {
       var listbarView = new FinalProject.Views.ListShow({
         model:  this.model.lists().first(),

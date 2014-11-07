@@ -6,7 +6,9 @@ FinalProject.Views.UserNav = Backbone.CompositeView.extend({
 
   events: {
     "blur .user-stub-button": "hideMenu",
-    "click .signout-button": "signOut"
+    "click .signout-button": "signOut",
+    "mouseenter #chat-button": "toggleNotifications",
+    "mouseleave #chat-button": "toggleNotifications"
   },
 
   template: JST["user/nav"],
@@ -31,6 +33,11 @@ FinalProject.Views.UserNav = Backbone.CompositeView.extend({
 
     this.addSubview(".user-nav-container", stub);
     this.addSubview(".searchbar-container", search);
+
+    var notes = new FinalProject.Views.NotificationsIndex();
+    console.log("notes:", notes);
+
+    this.addSubview(".notifications-container", notes);
 
     return this;
 
@@ -75,6 +82,12 @@ FinalProject.Views.UserNav = Backbone.CompositeView.extend({
         console.log("Drat!")
       }
     });
+  },
+
+  toggleNotifications: function () {
+    console.log("toggling");
+    var notifications = this.subviews(".notifications-container")[0];
+    notifications.toggleDisplay();
   }
 
 });
