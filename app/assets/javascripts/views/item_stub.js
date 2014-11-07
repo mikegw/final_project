@@ -1,5 +1,9 @@
 FinalProject.Views.ItemStub = Backbone.View.extend({
 
+  initialize: function () {
+    this.listenTo(this.model, 'remove', this.remove);
+  },
+
   tagName: 'li',
 
   template: JST["item/stub"],

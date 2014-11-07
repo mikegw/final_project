@@ -5,8 +5,8 @@ FinalProject.Views.UserNav = Backbone.CompositeView.extend({
   },
 
   events: {
-    "dblclick .user-stub-button": "showUser",
-    "blur .user-stub-button": "hideMenu"
+    "blur .user-stub-button": "hideMenu",
+    "click .signout-button": "signOut"
   },
 
   template: JST["user/nav"],
@@ -36,12 +36,6 @@ FinalProject.Views.UserNav = Backbone.CompositeView.extend({
 
   },
 
-  showUser: function (event) {
-    event.preventDefault();
-    var userId = event.currentTarget.children[1].dataset["id"];
-    Backbone.history.navigate("users/" + userId, {trigger: true});
-  },
-
   toggleMenu: function (event) {
     var userId = event.currentTarget.children[1].dataset["id"];
     var searchSub = this.subviews(".searchbar-container")[0];
@@ -68,6 +62,19 @@ FinalProject.Views.UserNav = Backbone.CompositeView.extend({
     viewToChange.hideMenu();
 
 
+  },
+
+  signOut: function () {
+    $.ajax({
+      url: "api/session",
+      type: "DELETE",
+      success: function () {
+        window.location = "/"
+      },
+      error: function () {
+        console.log("Drat!")
+      }
+    });
   }
 
 });

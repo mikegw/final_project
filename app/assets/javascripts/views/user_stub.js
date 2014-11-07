@@ -4,12 +4,13 @@ FinalProject.Views.UserStub = Backbone.View.extend({
     this.menuShown = false;
     this.wrapper = options.wrapper;
     this.listenTo(this.model, 'sync', this.render);
+    this.clicks = 0;
   },
 
   template: JST["user/stub"],
 
   events: {
-    "mousedown .user-stub-button": "toggleMenu",
+    "mousedown .user-stub-button": "handleClick",
     "mousedown .add-friend-button": "sendFriendRequest",
     "mousedown .accept-friend-button": "acceptFriendRequest",
     "mousedown .reject-friend-button": "rejectFriendRequest",
@@ -142,19 +143,21 @@ FinalProject.Views.UserStub = Backbone.View.extend({
 
   showMenu: function () {
     this.menuShown = true;
-    switch (this.checkStatus()) {
-    case "friend":
-      this.addUnfriendButton();
-      break;
-    case "pending":
-      this.addPending();
-      break;
-    case "potential":
-      this.addAcceptButton();
-      this.addRejectButton();
-      break;
-    default:
-      this.addFriendButton();
+    if(!(this.model.id === FinalProject.router.currentUser.id)) {
+      switch (this.checkStatus()) {
+      case "friend":
+        this.addUnfriendButton();
+        break;
+      case "pending":
+        this.addPending();
+        break;
+      case "potential":
+        this.addAcceptButton();
+        this.addRejectButton();
+        break;
+      default:
+        this.addFriendButton();
+      }
     }
   },
 
@@ -170,6 +173,32 @@ FinalProject.Views.UserStub = Backbone.View.extend({
   hideMenu: function () {
     this.menuShown = false;
     this.render();
+  },
+
+  showUser: function () {
+    event.preventDefault();
+    var userId = this.model.get("id");
+    if (this.model.get("id") === FinalProject.router.currentUser.get("id")){
+      Backbone.history.navigate("", {trigger: true});
+    } else {
+      Backbone.history.navigate("users/" + userId, {trigger: true});
+    }
+  },
+
+  handleClick: function () {
+    this.clicks++;  //count clicks
+
+    if(this.clicks === 1) {
+      timer = setTimeout((function() {
+        this.toggleMenu();
+        this.clicks = 0;
+      }).bind(this), 200);
+    } else {
+      clearTimeout(timer);
+      this.showUser();
+      this.clicks = 0;
+    }
   }
+
 
 });

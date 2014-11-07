@@ -6,6 +6,7 @@ html, body, header, nav, button, section, ul, li, main, form, figure, figure, in
   color: inherit;
   font: inherit;
   display: block;
+  z-index: inherit;
 }
 
 a {
@@ -17,7 +18,6 @@ ul {
 }
 
 input {
-  border: 1px solid purple;
   -webkit-appearance: none;
   outline: none;
 }
@@ -36,11 +36,16 @@ input:focus, textarea:focus {
   content: "";
 }
 
+html {
+  height: 100%;
+}
+
 main {
   position: absolute;
   top: 50px;
   bottom: 0;
   width: 100%;
+  height: 100%;
 }
 
 body {
@@ -49,6 +54,7 @@ body {
   bottom: 0;
   font-family: sans-serif;
   font-weight: none;
+  overflow: scroll;
 }
 
 .user-stub{
@@ -56,27 +62,34 @@ body {
   border-radius: 10px;
   padding: 5px;
   color: white;
+  width: 175px;
 
   img{
+    display: block;
     float: left;
   }
 
   h1 {
+    display: block;
     text-align: left;
     font-weight: bold;
+    float: none;
   }
 
   h2 {
+    display: block;
     text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 175px;
   }
 
 }
 
 .navbar {
-  width: 100%;
-//  height: 50px;
-  background: green;
-  padding: 10px;
+  //height: 48px;
+  background: #0a0;
+  padding: 5px;
 }
 .user-nav-container {
   float: left;
@@ -90,7 +103,7 @@ body {
 }
 
 .search-form {
-  margin: 14px;
+  margin: 0 14px;
   float: left;
   display: block;
 }
@@ -102,13 +115,34 @@ body {
 .search-results {
   float: left;
 
+  .user-stub {
+    float: left;
+    display: block;
+    margin-right: 10px;
+    background: rgba(0,0,0,0.3);
+  }
+
+  .pending {
+    background: rgba(0,200,0,0.2);
+  }
+
+  .potential {
+    background: rgba(200,0,200,0.5);
+  }
+
+  .friend {
+    background: rgba(0,200,0,0.5);
+  }
+
 }
 
-.search-results .user-stub {
-  float: left;
-  display: block;
-  margin-right: 10px;
-  background: rgba(0,0,0,0.3);
+
+
+.search-input {
+  margin-top: 3px;
+  background: white;
+  padding: 10px;
+  border: 1px solid grey;
 }
 
 .user-buttons {
@@ -117,40 +151,95 @@ body {
 
 .nav-buttons {
   float: right;
-  border: 2px solid orange;
-  width: 300px;
+  width: 250px;
 }
 
 .nav-button {
   float: left;
-  height: 42px;
-  width: 42px;
-  border: 1px solid black;
-  background: white;
+  height: 48px;
+  width: 48px;
+  margin-right: 2px;
+  font-size: 42px;
+  // background: white;
 }
 
-.session-button {
+.signout-button {
   float: right;
-  width: 75px;
-  height: 14px;
-  border: 3px solid yellow;
-  padding: 11px;
+  width: 150px;
+  height: 48px;
+  padding: 9px;
+  color: white;
 }
 
 .sidebar {
   float: left;
-  width: 270px;
+  width: 265px;
   height: 100%;
   background: white;
 
-  li {
+  .list-stub {
     width: 270px;
     height: 34px;
     float: left;
+
+
+
+    button {
+
+      width: 236px;
+      height: 34px;
+      padding: 6px 12px 6px 10px;
+      float: left;
+      cursor: pointer;
+      outline: none;
+      display: block;
+
+    }
+
+    .list-edit-button {
+      float: left;
+      width: 34px;
+      height: 34px;
+      cursor: pointer;
+      outline: none;
+      text-align: center;
+      color: white;
+    }
+
+    .list-edit-button.current-list {
+      color: black;
+    }
+
+    &:hover .list-edit-button {
+      color: black;
+    }
+
+    button:active {
+      background-color: pink;
+    }
+
+    button.current-list {
+      background-color: gainsboro;
+    }
+
+    // figure {
+    //   float: left;
+    //   height: 24px;
+    //   width: 20px;
+    //   background-color: blue;
+    // }
+
+    button.h3 {
+      float: left;
+      text-align: left;
+      height: 16px;
+      width: 170px;
+      margin: 3px 0;
+      margin-left: 8px;
+    }
   }
 
-  button {
-
+  .new-list-button {
     width: 236px;
     height: 34px;
     padding: 6px 12px 6px 10px;
@@ -158,40 +247,7 @@ body {
     cursor: pointer;
     outline: none;
     display: block;
-
-  }
-
-  .list-edit-button {
-    float: left;
-    width: 34px;
-    height: 34px;
-    cursor: pointer;
-    outline: none;
-    text-align: center;
-  }
-
-  button:active {
-    background-color: pink;
-  }
-
-  button.current-list {
-    background-color: gainsboro;
-  }
-
-  // figure {
-  //   float: left;
-  //   height: 24px;
-  //   width: 20px;
-  //   background-color: blue;
-  // }
-
-  button.h3 {
-    float: left;
-    text-align: left;
-    height: 16px;
-    width: 170px;
-    margin: 3px 0;
-    margin-left: 8px;
+    color: lightgrey;
   }
 
 }
@@ -202,7 +258,8 @@ body {
   height: 100%;
   left: 270px;
   right: 0;
-  padding: 5px;
+  // padding: 5px;
+  overflow-y: scroll;
 
 
   .background-image {
@@ -226,6 +283,7 @@ body {
 
 .items-container {
   padding: 30px;
+  height: 90%;
 }
 
 
@@ -274,10 +332,22 @@ body {
   margin-right: 20px;
   height: 16px;
   width: 16px;
+  position: relative;
 }
 
 .item-checkbox.checked {
   background: #0c0;
+  overflow: visible;
+}
+
+.item-checkbox.checked:after {
+  position: absolute;
+  content: "✔";
+  font-size: 24px;
+  overflow: visible;
+  bottom: -4px;
+  left: 2px;
+  color: black;
 }
 
 
@@ -304,6 +374,75 @@ body {
   padding: 10px;
 }
 
+
+.list-modal {
+
+  .edit-list-form {
+
+    input[type=text] {
+      width: 203px;
+      padding: 5px;
+      background: white;
+    }
+
+    span {
+      background: blue;
+    }
+
+    .list-radio-container {
+      position: relative;
+
+      .radio-container {
+        float: left;
+        display: block;
+
+        input {
+          display: none
+        }
+
+        label {
+          display: block;
+          background: lightgrey;
+          font-size: 12px;
+          padding:5px;
+        }
+
+        input:checked + label {
+          background: #0c0;
+        }
+
+      }
+
+    }
+
+  }
+
+
+  .list-modal-collaborators-container {
+
+    .user-stub {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .pending {
+      background: rgba(0,200,0,0.2);
+    }
+
+    .potential {
+      background: rgba(200,0,200,0.5);
+    }
+
+    .friend {
+      background: rgba(0,200,0,0.5);
+    }
+  }
+
+
+
+}
+
+
+
 .modal {
   display: none;
 }
@@ -319,53 +458,39 @@ body {
   width: 100%;
   height: 100%;
   z-index: 999;
+  transition: background-color 0.2s;
+
+}
+
+.modal-screen.is-active {
   background: rgba(0, 0, 0, 0.7);
+  transition: background-color 0.2s;
 }
 
 .modal-content {
   position: absolute;
   z-index: 1000;
   margin-left: -10px;
-  top: 20%;
+  top: 50%;
   right: -450px;
+  transform: translateY(-50%);
 
   width: 400px;
   padding: 10px;
+  border-radius: 5px;
 
-  background: white;
-  transition: right 1s;
+  background: rgba(255,255,255,0.5);
+  transition: right 0.2s;
 }
 
 .modal-content.is-active {
   position: absolute;
-  z-index: 1000;
-
-  top: 50%;
   right: 50px;
 
-  width: 400px;
-  padding: 10px;
-
   margin-left: -250px;
-  transform: translateY(-50%);
 
-  background: white;
-  border-radius: 5px;
-  transition: right 1s;
-}
 
-.modal-close {
-  position: absolute;
-  top: 0;
-  right: 15px;
-  font-size: 40px;
-  font-weight: bold;
-  cursor: pointer;
-  color: gray;
-}
-
-.modal-close:hover {
-  color: black;
+  transition: right 0.2s;
 }
 
 footer {
@@ -373,11 +498,17 @@ footer {
   bottom: 0;
   right: 0;
   padding: 3px;
-  background: rgba(255,255,255,0.5);
+  background: rgba(150,150,150,0.5);
   border-radius: 10px 0 0 0;
+  overflow: hidden;
+
+
 }
 .tabs {
+  display: block;
   padding: 3px;
+  margin: 0 auto;
+  width: 198px
 }
 
 .tabs li {
@@ -399,10 +530,32 @@ footer {
   display: none;
 }
 
-.tab-content.active {
-  display:block;
-  padding: 3px;
+.tab-content div {
+  width: 85px;
+  display: none;
 }
+
+.tab-content.active {
+  display: block;
+  position: relative;
+  bottom: -200px;
+  padding: 3px;
+  transition: bottom 0.2s;
+}
+
+footer:hover {
+
+  .tab-content.active {
+    bottom: 0;
+    transition: bottom 0.2s;
+  }
+
+  .tab-content div {
+    display: block;
+  }
+
+}
+
 
 
 .pending {

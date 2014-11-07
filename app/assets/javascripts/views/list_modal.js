@@ -2,18 +2,23 @@ FinalProject.Views.ListModal = Backbone.CompositeView.extend({
 
   initialize: function (options) {
     this.wrapper = options.wrapper;
+    this.modalType = options.modalType;
   },
 
-  template: JST["list/modal"],
+  template: function (options) {
+    return JST["list/" + this.modalType + "_modal"](options);
+  },
 
   tagName: "section",
-  className: "list modal",
+  className: "list-modal",
   id: "list-modal",
 
   events: {
     "click .modal-screen": "back",
+    "click #remove-button": "removeList",
     "submit form": "save",
     "click .user-stub-button": "addUserStubToCollaborators"
+
   },
 
   render: function () {
@@ -87,17 +92,45 @@ FinalProject.Views.ListModal = Backbone.CompositeView.extend({
   },
 
   back: function () {
+    this.$("#list-modal-content").removeClass("is-active");
+    this.$el.removeClass("is-active");
+    this.$("#list-modal-screen").removeClass("is-active");
+    setTimeout(this.leave.bind(this), 1000);
+  },
+
+  leave: function() {
     _(this.subviews(".searchbar-container")).each(function(sub){
       sub.remove();
     });
     this.remove();
-
   },
 
   save: function (event) {
     event.preventDefault();
+    console.log("Save event", event)
     var params = $(event.currentTarget).serializeJSON();
     console.log("Save called with", params);
+    this.model.save(params);
+    if(this.modalType === "new") {
+      FinalProject.router.currentUser.lists().add(this.model);
+    }
+    this.back();
+  },
+
+  removeList: function (event) {
+    event.preventDefault();
+    console.log("removing items", this.model.items());
+    while (model = this.model.items().first()) {
+      model.destroy();
+    }
+
+    this.model.destroy();
+    FinalProject.router.currentUser.lists().remove(this.model);
+
+
+
+
+    this.leave();
   }
 
 

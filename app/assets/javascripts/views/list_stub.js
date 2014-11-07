@@ -3,9 +3,11 @@ FinalProject.Views.ListStub = Backbone.View.extend({
   initialize: function (options) {
     this.user = options.user;
     this.listenTo(this.model, 'sync', this.render)
+    this.listenTo(this.model, 'remove', this.remove)
   },
 
   tagName: 'li',
+  className: "list-stub",
 
   template: JST["list/stub"],
 

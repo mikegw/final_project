@@ -12,10 +12,18 @@ FinalProject.Routers.Router = Backbone.Router.extend({
     this.$el = $("body");
   },
 
+  newSession: function () {
+    console.log("starting new session")
+    var landing = new FinalProject.Views.Landing();
+    this._swapView(landing);
+  },
+
   fetchCurrentUser: function () { //fix this - need to think about when to fetch
+    console.log("fetching current user")
     this.currentUser = new FinalProject.Models.CurrentUser();
     this.currentUser.fetch({
-      success: this.continue.bind(this)
+      success: this.continue.bind(this),
+      error: this.newSession.bind(this)
     });
   },
 
@@ -47,15 +55,15 @@ FinalProject.Routers.Router = Backbone.Router.extend({
     this._swapView(view);
   },
 
-  listShow: function(user_id, id) {
-    var list = FinalProject.Collections.users.get(user_id).lists().getOrFetch(id);
-
-    var mainView = new FinalProject.Views.ListShow({
-      model: list
-    });
-
-    this._swapMainView(mainView)
-  },
+  // listShow: function(user_id, id) {
+  //   var list = FinalProject.Collections.users.get(user_id).lists().getOrFetch(id);
+  //
+  //   var mainView = new FinalProject.Views.ListShow({
+  //     model: list
+  //   });
+  //
+  //   this._swapMainView(mainView)
+  // },
 
   _swapView: function (newView) {
     this.currentView && this.currentView.remove();

@@ -1,4 +1,4 @@
-class ListsController < ApplicationController
+class Api::ListsController < ApplicationController
 
   def create
     @list = current_user.lists.new(list_params)
@@ -27,6 +27,11 @@ class ListsController < ApplicationController
   end
 
   def destroy
+    @list = current_user.lists.find(params[:id])
+    unless @list.destroy()
+      puts "OH NO DIDN'T DESTROY!"
+    end
+    render json: @list
   end
 
   private

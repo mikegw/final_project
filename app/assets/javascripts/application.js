@@ -22,3 +22,9 @@
 //= require_tree ./views
 //= require_tree ./routers
 //= require_tree .
+
+$(document).ready(function(){
+  console.log("intializing from show.html.erb")
+  FinalProject.initialize();
+  Backbone.history.navigate("", {trigger: true})
+});

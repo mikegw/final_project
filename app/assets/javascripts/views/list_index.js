@@ -3,10 +3,11 @@ FinalProject.Views.ListIndex = Backbone.CompositeView.extend({
     console.log("listindex options", options)
     this.collection = this.model.lists();
     this.sharedLists = this.model.sharedLists();
-    this.listenTo(this.collection, 'add', this.addItem);
+    this.listenTo(this.collection, 'add', this.addList);
   },
 
   events: {
+    "click .new-list-button": "newList",
     "click .list-edit-button": "showListModal"
   },
 
@@ -53,14 +54,15 @@ FinalProject.Views.ListIndex = Backbone.CompositeView.extend({
 
     console.log("looking for", title)
 
-    clickedList = this.collection.find(function (list) {
+    var clickedList = this.collection.find(function (list) {
       return list.get("title") === title;
     });
 
     console.log( clickedList)
 
     var modal = new FinalProject.Views.ListModal({
-      model: clickedList
+      model: clickedList,
+      modalType: "edit"
     });
 
     this.addSubview('.list-modal-container', modal);
@@ -68,6 +70,26 @@ FinalProject.Views.ListIndex = Backbone.CompositeView.extend({
     setTimeout(function(){
       this.$("#list-modal").addClass("is-active");
       this.$("#list-modal-content").addClass("is-active");
+      this.$("#list-modal-screen").addClass("is-active");
+    }.bind(this), 0.5);
+  },
+
+  newList: function () {
+    var newList = new FinalProject.Models.List({
+      access: "PRIVATE"
+    });
+
+    var modal = new FinalProject.Views.ListModal({
+      model: newList,
+      modalType: "new"
+    });
+
+    this.addSubview('.list-modal-container', modal);
+
+    setTimeout(function(){
+      this.$("#list-modal").addClass("is-active");
+      this.$("#list-modal-content").addClass("is-active");
+      this.$("#list-modal-screen").addClass("is-active");
     }.bind(this), 0.5);
   }
 

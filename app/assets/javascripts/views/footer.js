@@ -8,7 +8,10 @@ FinalProject.Views.Footer = Backbone.CompositeView.extend({
   },
 
   events: {
-    "click .tab": "activateTab"
+    "click .tab": "activateTab",
+    "dblclick .user-stub": function () {
+      Backbone.history.navigate("", {trigger: true});
+    }
   },
 
   template: JST["user/footer"],

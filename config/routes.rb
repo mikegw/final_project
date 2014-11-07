@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'roots#show'
+  root 'sessions#blank'
 
   resources :users, only: [:new, :create, :show] do
     resources :friendships, only: :create do
@@ -26,6 +26,9 @@ Rails.application.routes.draw do
   resource :session, only: [:new, :create, :destroy]
 
   namespace :api do
+
+    resource :session, only: [:new, :create, :destroy]
+
     resources :users, only: :show do
 
       resources :friendships, only: :create do

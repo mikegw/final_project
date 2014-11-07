@@ -1,23 +1,13 @@
-<%= stylesheet_link_tag 'landing', media: 'all' %>
-
 <nav group>
   <h1>Alice-in-Wunderlist</h1>
 
-  <% flash[:errors] && flash[:errors].each do |error| %>
-    <%= error %>
-  <% end %>
   <section class="sign-in">
-    <form action="<%= session_url %>" method="post">
-      <input
-        type="hidden"
-        name="authenticity_token"
-        value="<%= form_authenticity_token %>">
-
+    <form>
       <input
         type="text"
         name="email"
         id="user-email"
-        value="<%= params[:email] %>"
+        value=""
         placeholder="Email">
 
       <input
@@ -43,24 +33,19 @@
   <div class="right-container">
     <section class="right">
       <h1>Sign Up</h1>
-      <form action="<%= users_url %>" method="post">
-        <input
-          type="hidden"
-          name="authenticity_token"
-          value="<%= form_authenticity_token %>">
-
+      <form>
         <label for="user-name">Name</label>
-        <input type="text" name="user[username]" id="user-name" value="<%= @user.username %>">
+        <input type="text" name="user[username]" id="user-name" value="">
 
         <br>
 
         <label for="user-email">Email</label>
-        <input type="text" name="user[email]" id="user-email" value="<%= @user.email %>">
+        <input type="text" name="user[email]" id="user-email" value="">
 
         <br>
 
         <label for="user-password">Password</label>
-        <input type="password" name="user[password]" id="user-password" value="<%= @user.password %>">
+        <input type="password" name="user[password]" id="user-password" value="">
 
         <br>
 

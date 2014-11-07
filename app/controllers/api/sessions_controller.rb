@@ -1,4 +1,4 @@
-class SessionsController < ApplicationController
+class Api::SessionsController < ApplicationController
   def new
     @user = User.new
   end
@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
 
     if user
       sign_in(user)
-      render :blank
+      render json: user
     else
       flash.now[:errors] = ["Invalid Email/Password combo"]
       render :new
@@ -21,11 +21,7 @@ class SessionsController < ApplicationController
 
   def destroy
     sign_out
-    redirect_to new_session_url
-  end
-
-  def blank
-    render :blank
+    render json: ["Signed Out!"]
   end
 
 end

@@ -7,7 +7,8 @@ FinalProject.Views.ItemShow = Backbone.CompositeView.extend({
   id: "item-modal",
 
   events: {
-    "click .modal-screen": "back"
+    "click .modal-screen": "back",
+    "click #remove-button": "removeItem"
   },
 
   render: function () {
@@ -32,6 +33,11 @@ FinalProject.Views.ItemShow = Backbone.CompositeView.extend({
     });
     this.remove();
 
+  },
+
+  removeItem: function () {
+    this.model.destroy();
+    this.back();
   }
 
 

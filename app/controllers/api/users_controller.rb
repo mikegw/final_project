@@ -5,8 +5,14 @@ class Api::UsersController < ApplicationController
   end
 
   def current
-    @user = current_user
-    render :show
+    if signed_in?
+      @user = current_user
+      puts "\nSending back current user\n"
+      render :show
+    else
+      puts "\nNo current user\n"
+      head "Bad Request"
+    end
   end
 
   def search
