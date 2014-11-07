@@ -4,3 +4,5 @@ FinalProject.Collections.Notifications = Backbone.Collection.extend({
   url: 'api/notifications'
 
 });
+
+FinalProject.notifications = new FinalProject.Collections.Notifications();

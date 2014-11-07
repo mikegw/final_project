@@ -88,6 +88,7 @@ FinalProject.Views.UserNav = Backbone.CompositeView.extend({
     console.log("toggling");
     var notifications = this.subviews(".notifications-container")[0];
     notifications.toggleDisplay();
+    $("#chat-button").removeClass("new-notification");
   }
 
 });

@@ -18,7 +18,24 @@ class Completion < ActiveRecord::Base
     puts "almost there"
     notification = self.notifications.unread.event(:completion).new
     notification.user = self.user
-    notification.save
+    users = self.item.list.collaborators.map(&:id) + [self.item.list.owner.id];
+
+    puts "     users #{users}"
+
+
+    parsed_notification =  {
+      id: notification.id,
+      text: notification.text,
+      is_read: notification.is_read,
+      created_at: notification.created_at,
+    }
+
+    if notification.save
+      Pusher["momeRaths"].trigger("newNotification", {
+        notification: parsed_notification,
+        users: users
+      })
+    end
   end
 
 end

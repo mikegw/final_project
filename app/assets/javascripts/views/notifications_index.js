@@ -2,15 +2,16 @@ FinalProject.Views.NotificationsIndex = Backbone.CompositeView.extend({
 
   initialize: function () {
     var that = this;
-    this.collection = new FinalProject.Collections.Notifications();
+    this.collection = FinalProject.notifications;
     this.collection.fetch({
       success: (function(){
         console.log("Howdy");
         that.render();
       })
     })
-  },
 
+    this.listenTo(this.collection, "newNotification", that.addNotification)
+  },
 
 
   tagName: 'section',
@@ -43,6 +44,24 @@ FinalProject.Views.NotificationsIndex = Backbone.CompositeView.extend({
     _(this.subviews("notifications-list")).each(function(show){
       show.read();
     });
-  }
+  },
+
+  addNotification: function (notification) {
+    console.log("Notification data", notification);
+
+    setTimeout((function () {
+      FinalProject.latest.shift();
+    }), 1000);
+
+    console.log("finding", notification.text, "in", FinalProject.latest);
+
+    if(_.indexOf(FinalProject.latest, notification.text) === -1) {
+      FinalProject.notifications.add(notification);
+      $("#chat-button").addClass("new-notification");
+    }
+
+    FinalProject.latest.push(notification.text);
+  },
+
 
 })

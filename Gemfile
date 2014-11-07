@@ -32,6 +32,10 @@ gem 'rails_12factor',  group: :production
 
 gem 'underscore-rails'
 
+gem 'figaro'
+
+gem 'pusher'
+
 # Use unicorn as the app server
 # gem 'unicorn'
 
