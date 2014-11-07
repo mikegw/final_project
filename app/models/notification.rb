@@ -24,7 +24,7 @@ class Notification < ActiveRecord::Base
     case self.event_name
     when :completion
       completion = self.notifiable
-      user = completion.user
+      user = self.user
       item = completion.item
       list = item.list
       return "#{user.username} completed \"#{item.content}\" from the list \"#{list.title}\""

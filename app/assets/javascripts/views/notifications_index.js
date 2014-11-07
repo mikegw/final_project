@@ -3,13 +3,9 @@ FinalProject.Views.NotificationsIndex = Backbone.CompositeView.extend({
   initialize: function () {
     var that = this;
     this.collection = FinalProject.notifications;
-    this.collection.fetch({
-      success: (function(){
-        console.log("Howdy");
-        that.render();
-      })
-    })
+    this.collection.fetch()
 
+    this.listenTo(this.collection, "add sync", this.render);
     this.listenTo(this.collection, "newNotification", that.addNotification)
   },
 
@@ -39,7 +35,6 @@ FinalProject.Views.NotificationsIndex = Backbone.CompositeView.extend({
 
 
   toggleDisplay: function () {
-    console.log("YAY");
     $(".notifications ul").toggleClass("active");
     _(this.subviews("notifications-list")).each(function(show){
       show.read();
@@ -47,20 +42,19 @@ FinalProject.Views.NotificationsIndex = Backbone.CompositeView.extend({
   },
 
   addNotification: function (notification) {
-    console.log("Notification data", notification);
 
-    setTimeout((function () {
-      FinalProject.latest.shift();
-    }), 1000);
+    // setTimeout((function () {
+    //   FinalProject.latest.shift();
+    // }), 1000);
 
-    console.log("finding", notification.text, "in", FinalProject.latest);
+    // console.log("finding", notification.text, "in", FinalProject.latest);
 
-    if(_.indexOf(FinalProject.latest, notification.text) === -1) {
+    if(_.indexOf(FinalProject.notifications, notification) === -1) {
       FinalProject.notifications.add(notification);
       $("#chat-button").addClass("new-notification");
     }
 
-    FinalProject.latest.push(notification.text);
+    // FinalProject.latest.push(notification.text);
   },
 
 

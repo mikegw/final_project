@@ -15,6 +15,18 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  def create
+    @user = User.new(user_params)
+    if @user.save
+      sign_in(@user)
+      render json: @user;
+    else
+      flash.now[:errors] = @user.errors.full_messages
+      render json: [@user.errors.full_messages], status: 422
+    end
+  end
+
+
   def search
     p params
     @user = current_user
@@ -33,5 +45,9 @@ class Api::UsersController < ApplicationController
     render :search
   end
 
+  private
 
+  def user_params
+    params.require(:user).permit(:username, :email, :password)
+  end
 end

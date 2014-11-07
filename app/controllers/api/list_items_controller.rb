@@ -13,9 +13,10 @@ class Api::ListItemsController < ApplicationController
     list = List.find(params[:list_id])
     @list_item = list.list_items.find(params[:id])
     completed = @list_item.completed
-    ActiveRecord::Base.transaction do
-      begin
-        @list_item.update(list_item_params)
+
+    begin
+      ActiveRecord::Base.transaction do
+        @list_item.update!(list_item_params)
         p @list_item
         puts "item updated"
         if !completed && list_item_params[:completed]
@@ -23,14 +24,15 @@ class Api::ListItemsController < ApplicationController
           Completion.create!({user_id: current_user.id, item_id: params[:id]})
           puts "Completed #{@list_item.content}"
         end
-      rescue
-        flash[:errors] = @list_item.errors.full_messages
-        puts @list_item.errors.full_messages
-        puts "FAILED"
-        return render json: []
       end
+
+      render json: @list_item
+    rescue ActiveRecord::RecordNotSaved => e
+      flash[:errors] = e.message
+      puts @list_item.errors.full_messages
+      puts "FAILED"
+      render json: e.message, status: 422
     end
-    render json: @list_item
   end
 
   def destroy

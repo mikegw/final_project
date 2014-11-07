@@ -30,7 +30,6 @@ FinalProject.Routers.Router = Backbone.Router.extend({
   continue: function () {
     console.log("taking over with user ", this.currentUser);
     FinalProject.Collections.users.add(this.currentUser);
-    this.$el.html(JST['home']);
     this.currentUserShow();
   },
 

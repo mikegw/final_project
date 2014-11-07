@@ -50,17 +50,47 @@ class User < ActiveRecord::Base
 
   has_many :notifications, -> { order('created_at desc').limit(50) }, inverse_of: :user, dependent: :destroy
 
-  has_many :unread_notifications,
-    -> { where(is_read: false) },
-    class_name: "Notification",
-    inverse_of: "user",
-    dependent: :destroy
+  # has_many :unread_notifications,
+  #   -> { where(is_read: false) },
+  #   class_name: "Notification",
+  #   inverse_of: "user",
+  #   dependent: :destroy
+  #
+  # has_many :read_notifications,
+  #   -> { where(is_read: true) },
+  #   class_name: "Notification",
+  #   inverse_of: "user",
+  #   dependent: :destroy
 
-  has_many :read_notifications,
-    -> { where(is_read: true) },
-    class_name: "Notification",
-    inverse_of: "user",
-    dependent: :destroy
+
+  def unread_notifications
+    Notification.find_by_sql([<<-SQL, user_id: self.id])
+    SELECT
+      notifications.*
+    FROM
+      notifications
+    INNER JOIN
+      completions ON notifications.notifiable_id = completions.id
+    INNER JOIN
+      list_items ON completions.item_id = list_items.id
+    INNER JOIN
+      shares AS shared_with_me ON shared_with_me.list_id = list_items.list_id
+    INNER JOIN
+      users AS collaborators ON shared_with_me.user_id = collaborators.id
+    INNER JOIN
+      lists ON list_items.list_id = lists.id
+    INNER JOIN
+      users AS list_owners ON lists.owner_id = list_owners.id
+    WHERE
+      (list_owners.id = :user_id
+    OR
+      collaborators.id = :user_id)
+    AND
+      notifications.is_read = false
+    AND
+      notifications.user_id != :user_id
+    SQL
+  end
 
   has_many :completions, inverse_of: :user
 

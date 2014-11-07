@@ -2,7 +2,10 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
 
   initialize: function (options) {
     this.user = options.user;
+
     this.collection = this.model.items();
+    console.log("Initialize items", this.model.items());
+    console.log("init collection", this.collection);
     this.listenTo(this.model, 'sync', this.render);
     this.listenTo(this.collection, 'add', this.addItem.bind(this));
     this.listenTo(this.user, "clickStub", this.renderList);
@@ -51,6 +54,7 @@ FinalProject.Views.ListShow = Backbone.CompositeView.extend({
   },
 
   render: function () {
+    console.log("col", this.model.items());
     console.log("rendering ListShow with list", this.model);
     var content = this.template({
       list: this.model

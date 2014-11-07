@@ -1,3 +1,4 @@
+
 class RemoveCompletedColumnFromLists < ActiveRecord::Migration
   def up
     remove_column :lists, :completed

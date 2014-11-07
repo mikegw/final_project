@@ -12,12 +12,7 @@ FinalProject.Views.ListStub = Backbone.View.extend({
   template: JST["list/stub"],
 
   events: {
-    "click button": function () {
-      console.log("trigger render of list", this.model)
-      $(".current-list").removeClass("current-list");
-      this.$("button").addClass("current-list");
-      this.user.trigger("stubClick", {list: this.model})
-    }
+    "click button": "renderList"
   },
 
   tagname: "li",
@@ -30,6 +25,13 @@ FinalProject.Views.ListStub = Backbone.View.extend({
 
     this.$el.html(content);
     return this;
+  },
+
+  renderList: function () {
+    console.log("trigger render of list", this.model)
+    $(".current-list").removeClass("current-list");
+    this.$("button").addClass("current-list");
+    this.user.trigger("stubClick", {list: this.model})
   }
 
 })

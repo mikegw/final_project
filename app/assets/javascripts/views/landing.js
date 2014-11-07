@@ -4,6 +4,8 @@ FinalProject.Views.Landing = Backbone.View.extend({
 
   },
 
+  className: "new-session-page",
+
   events: {
     "submit main form": "signUp",
     "submit nav form": "signIn"
@@ -41,6 +43,22 @@ FinalProject.Views.Landing = Backbone.View.extend({
   signUp: function (event) {
     event.preventDefault();
     var params = $(event.currentTarget).serializeJSON();
+
+    $.ajax({
+      url: "/api/users",
+      type: "POST",
+      data: params,
+      success: function () {
+        console.log("Signed in");
+        window.location = "/"
+      },
+      error: function () {
+        console.log("Failed to create!");
+        $(event.currentTarget).$("#user-password").val("");
+      }
+    });
+
+
   }
 
 });

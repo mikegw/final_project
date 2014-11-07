@@ -11,7 +11,7 @@ FinalProject.Views.UserShow = Backbone.CompositeView.extend({
   template: JST["user/show"],
 
   render: function () {
-    event.preventDefault();
+
     console.log("rendering UserShow with model", this.model)
     console.log("this.model has username", this.model.get("username"));
 
@@ -60,12 +60,14 @@ FinalProject.Views.UserShow = Backbone.CompositeView.extend({
   },
 
   renderList: function (event) {
-    console.log("renderlist caught event", event)
+    // console.log("renderlist caught event", event);
     _(this.subviews('.listbar-container')).each((function(view) {
-      if(view["className"] === "listbar") {
+      if(view && view["className"] === "listbar") {
         this.removeSubview('.listbar-container', view);
       }
     }).bind(this));
+
+    console.log(event.list);
 
     var listbarView = new FinalProject.Views.ListShow({
       model: event.list,

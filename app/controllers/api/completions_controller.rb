@@ -2,6 +2,7 @@ class CompletionsController < ApplicationController
 
   def create
     @completion = Completion.new({user_id: params[:user_id], item_id: params[:item_id]})
+    puts @completion
     unless @completion.save
       flash[:errors] = @completion.errors.full_messages
     end

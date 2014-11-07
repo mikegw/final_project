@@ -2,7 +2,7 @@
   <h1>Alice-in-Wunderlist</h1>
 
   <section class="sign-in">
-    <form>
+    <form group>
       <input
         type="text"
         name="email"
@@ -26,7 +26,12 @@
   <div class="left-container">
     <section class="left">
       <h1>Wunderlist Clone</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <h2>Your life in sync</h2>
+      <p>We love lists. They capture ideas, things to do and places to see. And when you share them, they influence the world around you. This is Wunderlist.</p>
+      <h2>Your team, synchronized</h2>
+      <p>
+        Wunderlist for Business makes it easy to manage all your team’s projects with centralized communication and unlimited collaboration features. Start your free trial and join over 50,000 businesses that use Wunderlist everyday.
+      </p>
     </section>
   </div>
 
@@ -34,20 +39,11 @@
     <section class="right">
       <h1>Sign Up</h1>
       <form>
-        <label for="user-name">Name</label>
-        <input type="text" name="user[username]" id="user-name" value="">
+        <input type="text" name="user[username]" id="user-name" value="" placeholder="Name">
 
-        <br>
+        <input type="text" name="user[email]" id="user-email" value="" placeholder="Email">
 
-        <label for="user-email">Email</label>
-        <input type="text" name="user[email]" id="user-email" value="">
-
-        <br>
-
-        <label for="user-password">Password</label>
-        <input type="password" name="user[password]" id="user-password" value="">
-
-        <br>
+        <input type="password" name="user[password]" id="user-password" value="" placeholder="Password">
 
         <input type="submit" value="Create Free Account">
       </form>

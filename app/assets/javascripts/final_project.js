@@ -18,11 +18,13 @@ window.FinalProject = {
     this.latest = [];
 
     channel.bind('newNotification', function (data) {
-      console.log("data users", data.users);
-      console.log(_.indexOf(data.users, FinalProject.router.currentUser.get("id")));
-      if(_.indexOf(data.users, FinalProject.router.currentUser.get("id")) > -1) {
+      console.log("data", data);
+      console.log(_.indexOf(data.users, FinalProject.router.currentUser.id));
+
+      if(_.indexOf(data.users, FinalProject.router.currentUser.id) > -1) {
         FinalProject.notifications.trigger("newNotification", data.notification);
       }
+
     });
 
 
