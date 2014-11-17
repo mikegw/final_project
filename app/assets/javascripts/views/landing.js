@@ -7,8 +7,8 @@ FinalProject.Views.Landing = Backbone.View.extend({
   className: "new-session-page",
 
   events: {
-    "submit main form": "signUp",
-    "submit nav form": "signIn"
+    "submit .sign-up-form": "signUp",
+    "submit .sign-in-form": "signIn"
   },
 
   template: JST['landing'],
